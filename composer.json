@@ -2,7 +2,7 @@
     "name": "mbiz/installer-v2",
     "description": "The Installer is a PHP command line tool for Magento extension development and scaffolding.",
     "minimum-stability": "beta",
-    "license": "GNU GENERAL PUBLIC",
+    "license": "GNU GENERAL PUBLIC LICENSE",
     "authors": [
         {
             "name": "Jacques Bodin-Hullin",
