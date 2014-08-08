@@ -31,42 +31,62 @@
 
 namespace Mbiz\Installer;
 
-use Symfony\Component\Console\Application as BaseApplication;
-use Mbiz\Installer\Shell;
+use Symfony\Component\Console\Shell as BaseShell;
 
-class Application extends BaseApplication
+class Shell extends BaseShell
 {
 
     /**
-     * Name of the Application
-     * @const APP_NAME string
+     * The application
+     * @var Application
      */
-    const APP_NAME = 'Installer';
+    private $_application;
 
     /**
-     * Version of the Application
-     * @const APP_VERSION string
+     * The logo of the Installer
+     * @var string
      */
-    const APP_VERSION = '2.0.0@dev';
+    private $_logo = "
+  _____           _        _ _                  ___  
+ |_   _|         | |      | | |                |__ \ 
+   | |  _ __  ___| |_ __ _| | | ___ _ __  __   __ ) |
+   | | | '_ \/ __| __/ _` | | |/ _ \ '__| \ \ / // / 
+  _| |_| | | \__ \ || (_| | | |  __/ |     \ V // /_ 
+ |_____|_| |_|___/\__\__,_|_|_|\___|_|      \_/|____|
+                                                     
+    ";
 
     /**
-     * Construct the Application
+     * Constructor.
+     *
+     * If there is no readline support for the current PHP executable
+     * a \RuntimeException exception is thrown.
+     *
+     * @param Application $application An application instance
      */
-    public function __construct()
+    public function __construct(Application $application)
     {
-        parent::__construct(self::APP_NAME, self::APP_VERSION);
+        $this->_application = $application;
 
-        $this->runShell();
+        parent::__construct($application);
     }
 
     /**
-     * Start the Installer's shell
+     * Retrieve the Header text
+     * @return string
      */
-    public function runShell()
+    protected function getHeader()
     {
-        $shell = new Shell($this);
-        $shell->run();
+        return <<<EOF
+{$this->_logo}
+Welcome to the <info>{$this->_application->getName()}</info> shell (<comment>{$this->_application->getVersion()}</comment>).
+
+At the prompt, type <comment>help</comment> for some help,
+or <comment>list</comment> to get a list of available commands.
+
+To exit the shell, type <comment>^D</comment>.
+
+EOF;
     }
 
 }
-
