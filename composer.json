@@ -1,0 +1,35 @@
+{
+    "name": "mbiz/installer-v2",
+    "description": "The Installer is a PHP command line tool for Magento extension development and scaffolding.",
+    "minimum-stability": "beta",
+    "license": "GNU GENERAL PUBLIC",
+    "authors": [
+        {
+            "name": "Jacques Bodin-Hullin",
+            "email": "j.bodinhullin@monsieurbiz.com"
+        },
+        {
+            "name": "Andre Flitsch",
+            "email": "andre@pixelperfect.at"
+        },
+        {
+            "name": "Andreas Vogt",
+            "email": "andreas.vogt@vocode.de"
+        },
+        {
+            "name": "Andreas Penz",
+            "email": "testa.peta@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "2.6.*@dev",
+        "twig/twig": "1.16.*@dev",
+        "symfony/event-dispatcher": "2.6.*@dev"
+    },
+    "autoload": {
+        "psr-0": {
+            "Mbiz": "src",
+            "Composer": "src"
+        }
+    }
+}
