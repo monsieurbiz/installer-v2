@@ -32,6 +32,7 @@
 namespace Mbiz\Installer;
 
 use Symfony\Component\Console\Shell as BaseShell;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class Shell extends BaseShell
 {
@@ -57,6 +58,18 @@ class Shell extends BaseShell
     ";
 
     /**
+     * The output
+     * @var
+     */
+    protected $_output;
+
+    /**
+     * The prompt
+     * @var string
+     */
+    protected $_prompt;
+
+    /**
      * Constructor.
      *
      * If there is no readline support for the current PHP executable
@@ -67,6 +80,8 @@ class Shell extends BaseShell
     public function __construct(Application $application)
     {
         $this->_application = $application;
+
+        $this->_output = new ConsoleOutput;
 
         parent::__construct($application);
     }
@@ -87,6 +102,30 @@ or <comment>list</comment> to get a list of available commands.
 To exit the shell, type <comment>^D</comment>.
 
 EOF;
+    }
+
+    /**
+     * Set the prompt
+     * @param string $prompt
+     * @return \Mbiz\Installer\Shell
+     */
+    public function setPrompt($prompt = null)
+    {
+        $this->_prompt = $prompt;
+        return $this;
+    }
+
+    /**
+     * Renders a prompt.
+     *
+     * @return string The prompt
+     */
+    protected function getPrompt()
+    {
+        if ($this->_prompt !== null) {
+            return $this->_output->getFormatter()->format($this->_prompt .' > ');
+        }
+        return parent::getPrompt();
     }
 
 }
