@@ -41,6 +41,7 @@ class Translate extends BaseCommand
     {
         $_installerHelper = new InstallerHelper();
 
+        $params = $input->getParams();
         if (!empty($params) && in_array($params[0], array('admin', 'front'))) {
             $where = $params[0];
         } else {
@@ -91,7 +92,7 @@ class Translate extends BaseCommand
             }
         }
 
-        $this->_processReloadConfig();
+        $_installerHelper->_processReloadConfig();
 
         $_installerHelper->setLast(__FUNCTION__);
     }

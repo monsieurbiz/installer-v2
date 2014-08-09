@@ -38,6 +38,10 @@ class Event{
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $_installerHelper = new InstallerHelper();
+
+        $params = $input->getParams();
         if (empty($params)) {
             do {
                 $eventName = $_installerHelper->prompt('Event Name?');
@@ -86,8 +90,6 @@ class Event{
         } elseif ($where == 'global') {
             $where = 'global';
         }
-
-        $_installerHelper = new InstallerHelper();
 
         // Config
         $config = $_installerHelper->getConfig();

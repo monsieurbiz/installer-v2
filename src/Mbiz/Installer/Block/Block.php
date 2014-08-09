@@ -38,7 +38,10 @@ class Block{
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+
         $_installerHelper = new InstallerHelper();
+
+        $params = $input->getParams();
         if (empty($params)) {
             do {
                 $name = ucfirst($_installerHelper->prompt('Class?'));

@@ -38,6 +38,10 @@ class Defaultconfig{
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $_installerHelper = new InstallerHelper();
+
+        $params = $input->getParams();
         if (empty($params)) {
             do {
                 $name = $_installerHelper->prompt("Name?");
@@ -54,7 +58,6 @@ class Defaultconfig{
             $value = array_shift($params);
         }
 
-        $_installerHelper = new InstallerHelper();
         // conf
         /* @var $config SimpleXMLElement */
         $config = $_installerHelper->getConfig();

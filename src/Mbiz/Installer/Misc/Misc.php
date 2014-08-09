@@ -38,7 +38,10 @@ class Misc extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
+
         $_installerHelper = new InstallerHelper();
+
+        $params = $input->getParams();
         if (empty($params)) {
             do {
                 $name = $_installerHelper->prompt('Which name?');

@@ -282,6 +282,6 @@ class Info{
             }
         }
 
-        $this->_processReloadConfig();
+        $_installerHelper->_processReloadConfig();
     }
 }

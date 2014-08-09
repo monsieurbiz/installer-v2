@@ -85,7 +85,7 @@ class Setup{
             )));
         }
 
-        $this->_processReloadConfig();
+        $_installerHelper->_processReloadConfig();
 
         $_installerHelper->setLast(__FUNCTION__);
     }

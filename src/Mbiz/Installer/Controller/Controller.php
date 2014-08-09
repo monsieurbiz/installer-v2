@@ -36,11 +36,12 @@ use Mbiz\Installer\Helper as InstallerHelper;
 
 class Controller{
 
-    public function execute(array $params, array $data = array())
+    public function execute(InputInterface $input, OutputInterface $output)
     {
 
         $_installerHelper = new InstallerHelper();
 
+        $params = $input->getParams();
         if (empty($params)) {
             do {
                 $name = ucfirst($_installerHelper->prompt('Name? (enter for index)'));

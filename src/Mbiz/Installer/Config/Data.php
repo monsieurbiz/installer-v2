@@ -41,6 +41,7 @@ class Data{
 
         $_installerHelper = new InstallerHelper();
 
+        $params = $input->getParams();
         list($dir, $created) = $_installerHelper->getModuleDir('data', true);
 
         $config = $_installerHelper->getConfig();

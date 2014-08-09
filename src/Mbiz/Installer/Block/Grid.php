@@ -41,6 +41,7 @@ class Grid{
     {
         $_installerHelper = new InstallerHelper();
 
+        $params = $input->getParams();
         // Check entity
         if (empty($params)) {
             do {

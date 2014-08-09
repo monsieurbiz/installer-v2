@@ -46,6 +46,7 @@ class Email
 
         $_installerHelper = new InstallerHelper();
 
+        $params = $input->getParams();
         // Get email name
         if (empty($params)) {
             do {

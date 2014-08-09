@@ -40,6 +40,7 @@ class Entity
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $params = $input->getParams();
 
         $command = $this->getApplication()->find('resources');
         $command->run($input, $output);
@@ -141,7 +142,7 @@ class Entity
             )));
         }
 
-        $this->_processReloadConfig();
+        $_installerHelper->_processReloadConfig();
 
         $_installerHelper->setLast(__FUNCTION__);
     }
