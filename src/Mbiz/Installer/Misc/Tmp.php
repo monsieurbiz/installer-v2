@@ -67,7 +67,8 @@ class Tmp extends BaseCommand
         $command = $this->getApplication()->find('controller');
         $arguments = array(
             'command' => 'controller',
-            'params'    => array('data', $params)
+            'params'    => array('data', $params),
+            'type'      => 'action'
         );
 
         $input = new ArrayInput($arguments);

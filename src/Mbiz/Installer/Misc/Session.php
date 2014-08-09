@@ -48,8 +48,9 @@ class Session extends BaseCommand
 
         $command = $this->getApplication()->find('model');
         $arguments = array(
-            'command' => 'model',
-            'params'    => array('data', $params)
+            'command'   => 'model',
+            'params'    => array('data', $params),
+            'type'      => false
         );
 
         $input = new ArrayInput($arguments);

@@ -42,6 +42,7 @@ class Model extends BaseCommand
         $_installerHelper = new InstallerHelper();
 
         $params = $input->getParams();
+        $type = $input->getType() ?: false;
 
         if (empty($params)) {
             do {

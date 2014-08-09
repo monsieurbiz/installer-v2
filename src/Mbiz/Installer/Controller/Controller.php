@@ -42,6 +42,9 @@ class Controller extends BaseCommand {
         $_installerHelper = new InstallerHelper();
 
         $params = $input->getParams();
+        $type = $input->getType() ?: false;
+        $data = $input->getData() ?: false;
+
         if (empty($params)) {
             do {
                 $name = ucfirst($_installerHelper->prompt('Name? (enter for index)'));
@@ -90,7 +93,7 @@ class Controller extends BaseCommand {
 
         // Vars & Methods
         $content = file_get_contents($filename);
-        $_installerHelper->replaceVarsAndMethods($content, $params, 'action');
+        $_installerHelper->replaceVarsAndMethods($content, $params, $type);
 
         // Other data
         if (isset($data['consts'])) {

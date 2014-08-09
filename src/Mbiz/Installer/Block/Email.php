@@ -111,7 +111,8 @@ class Email extends BaseCommand {
                     '{methodName}' => lcfirst($_installerHelper->_camelize('send_' . $name)),
                     '{name}' => $name
                 ))
-            )
+            ),
+            'type'      => false
         );
 
         $input = new ArrayInput($arguments);
