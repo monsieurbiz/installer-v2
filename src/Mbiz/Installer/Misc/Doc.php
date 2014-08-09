@@ -28,3 +28,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
+namespace Mbiz\Installer\Routers\Doc;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+
+class Doc extends BaseCommand
+{
+    protected function _process(array $params)
+    {
+        // Title?
+        if (!empty($params)) {
+            $title = implode(' ', $params);
+        } else {
+            $title = $this->getModuleTitle();
+        }
+
+        $dir = $this->getModuleDir('doc');
+
+        if (!is_file($filename = $dir . '/README.md')) {
+            file_put_contents($filename, $this->getTemplate('doc_readme', array(
+                'title' => $title
+            )));
+        }
+    }
+}
