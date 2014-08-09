@@ -2,11 +2,11 @@
 
 namespace Mbiz\Installer\Hello;
 
-use Symfony\Component\Console\Command\Command as BasicCommand;
+use Mbiz\Installer\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Hello extends BasicCommand
+class Hello extends BaseCommand
 {
 
     public function configure()
