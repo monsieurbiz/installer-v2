@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Data{
 
-    public function execute(array $params)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         list($dir, $created) = $this->getModuleDir('data', true);
 
