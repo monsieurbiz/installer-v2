@@ -32,25 +32,26 @@
 namespace Mbiz\Installer\Core;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Delete{
 
     protected function execute()
     {
+        $_installerHelper = new InstallerHelper();
         do {
-            $response = strtolower($this->prompt('Are you sure you want to delete the module ' . red() . $this->getModuleName() . white() . '? (yes/no)'));
+            $response = strtolower($_installerHelper->prompt('Are you sure you want to delete the module ' . red() . $_installerHelper->getModuleName() . white() . '? (yes/no)'));
         } while (!in_array($response, array('yes', 'no')));
 
-        $_installationHelper = new InstallationHelper();
+
 
         if ($response === 'yes') {
-            $_installationHelper->_rmdir($this->getModuleDir());
-            @unlink($this->getAppDir() . 'etc/modules/' . $this->getModuleName() . '.xml');
-            $_installationHelper->_rmdir($this->getDesignDir('frontend') . strtolower($this->getModuleName()));
-            $_installationHelper->_rmdir($this->getDesignDir('adminhtml') . strtolower($this->getModuleName()));
-            foreach ($_installationHelper->getLocales() as $locale) {
-                @unlink($this->getAppDir() . 'locale/' . $locale . '/' . $this->getModuleName() . '.csv');
+            $_installerHelper->_rmdir($_installerHelper->getModuleDir());
+            @unlink($_installerHelper->getAppDir() . 'etc/modules/' . $_installerHelper->getModuleName() . '.xml');
+            $_installerHelper->_rmdir($_installerHelper->getDesignDir('frontend') . strtolower($_installerHelper->getModuleName()));
+            $_installerHelper->_rmdir($_installerHelper->getDesignDir('adminhtml') . strtolower($_installerHelper->getModuleName()));
+            foreach ($_installerHelper->getLocales() as $locale) {
+                @unlink($_installerHelper->getAppDir() . 'locale/' . $locale . '/' . $_installerHelper->getModuleName() . '.csv');
             }
             $this->_namespace = null;
             $this->_module = null;

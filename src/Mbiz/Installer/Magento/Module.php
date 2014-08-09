@@ -29,42 +29,52 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-namespace Mbiz\Installer\Config;
+namespace Mbiz\Installer\Magento;
 
-use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper as InstallerHelper;
+class Module
+{
+    /**
+     * Module's vendor
+     * @var string
+     */
+    protected $_vendor;
 
-class General{
+    /**
+     * Module's name
+     * @var string
+     */
+    protected $_module;
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * Module's pool
+     * @var string (local or community)
+     */
+    protected $_pool;
+
+    /**
+     * Configuration
+     * @var
+     */
+    protected $_config;
+
+    /**
+     * Reinit (or init..) a new module
+     * @param string $vendor The module's vendor name
+     * @param string $module The module's name
+     * @param string $pool The module's pool (local or community)
+     * @return \Mbiz\Installer\Magento\Module
+     */
+    public function reinit($vendor, $module, $pool)
     {
-        // If no config file
-        $_installerHelper = new InstallerHelper();
-        if (false === $local = $_installerHelper->_getLocalXml()) {
-            return;
-        }
+        // Reinit the config
+        $this->_config = null;
 
-        $width = 80;
+        // Set info
+        $this->_vendor = $vendor;
+        $this->_module = $module;
+        $this->_pool = $pool;
 
-        // General
-        echo red() . "General Configuration\n";
-        echo red() . str_repeat('-', $width) . "\n";
-
-        // Database
-        if (
-            $local->global
-            && $local->global->resources
-            && $local->global->resources->default_setup
-            && $local->global->resources->default_setup->connection
-        ) {
-            echo green() . "Database\n";
-            $c = $local->global->resources->default_setup->connection;
-            echo yellow() . 'Host' . white() . ' : ' . trim($c->host) . "\n";
-            echo yellow() . 'User' . white() . ' : ' . trim($c->username) . "\n";
-            echo yellow() . 'Pass' . white() . ' : ' . trim($c->password) . "\n";
-            echo yellow() . 'Name' . white() . ' : ' . trim($c->dbname) . "\n";
-        }
-
-        echo "\n";
+        return $this;
     }
+
 }

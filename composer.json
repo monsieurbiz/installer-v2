@@ -32,6 +32,9 @@
         "symfony/yaml": "2.6.*@dev",
         "symfony/finder": "2.6.*@dev"
     },
+    "require-dev": {
+        "mikey179/vfsStream": "v1.3.0"
+    },
     "autoload": {
         "psr-0": {
             "Mbiz": "src",

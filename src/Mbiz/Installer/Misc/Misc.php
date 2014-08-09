@@ -32,15 +32,16 @@
 namespace Mbiz\Installer\Misc;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Misc extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $_installerHelper = new InstallerHelper();
         if (empty($params)) {
             do {
-                $name = $this->prompt('Which name?');
+                $name = $_installerHelper->prompt('Which name?');
             } while (empty($name));
         } else {
             $name = array_shift($params);
@@ -48,7 +49,7 @@ class Misc extends BaseCommand
 
         $name = str_replace(' ', '_', strtolower($name));
 
-        $dir = $this->getMiscDir();
+        $dir = $_installerHelper->getMiscDir();
         if (!is_dir($dir)) {
             mkdir($dir);
         }
@@ -56,7 +57,7 @@ class Misc extends BaseCommand
         $filename = $dir . '/' . $name . '.php';
 
         if (!is_file($filename)) {
-            file_put_contents($filename, $this->getTemplate('misc'));
+            file_put_contents($filename, $_installerHelper->getTemplate('misc'));
         }
 
     }

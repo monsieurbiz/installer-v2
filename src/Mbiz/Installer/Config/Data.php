@@ -32,42 +32,45 @@
 namespace Mbiz\Installer\Config;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Data{
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        list($dir, $created) = $this->getModuleDir('data', true);
 
-        $config = $this->getConfig();
+        $_installerHelper = new InstallerHelper();
+
+        list($dir, $created) = $_installerHelper->getModuleDir('data', true);
+
+        $config = $_installerHelper->getConfig();
         if (!isset($config->global)) {
             $config->addChild('global');
         }
         $global = $config->global;
-        if (!$global->resources || !$global->resources->{strtolower($this->getModuleName()) . '_setup'}) {
+        if (!$global->resources || !$global->resources->{strtolower($_installerHelper->getModuleName()) . '_setup'}) {
             if (!$resources = $global->resources) {
                 $resources = $global->addChild('resources');
             }
-            if (!$moduleSetup = $resources->{strtolower($this->getModuleName()) . '_setup'}) {
-                $moduleSetup = $resources->addChild(strtolower($this->getModuleName()) . '_setup');
+            if (!$moduleSetup = $resources->{strtolower($_installerHelper->getModuleName()) . '_setup'}) {
+                $moduleSetup = $resources->addChild(strtolower($_installerHelper->getModuleName()) . '_setup');
             }
 
             $setup = $moduleSetup->addChild('setup');
-            $setup->addChild('module', $this->getModuleName());
+            $setup->addChild('module', $_installerHelper->getModuleName());
             $setup->addChild('class', 'Mage_Core_Model_Resource_Setup');
             $connection = $moduleSetup->addChild('connection');
             $connection->addChild('use', 'core_setup');
-            $this->writeConfig();
+            $_installerHelper->writeConfig();
         }
 
-        $dir = $dir . strtolower($this->getModuleName()) . '_setup/';
+        $dir = $dir . strtolower($_installerHelper->getModuleName()) . '_setup/';
 
         if (!is_dir($dir)) {
             mkdir($dir);
         }
 
-        $version = $this->getConfigVersion();
+        $version = $_installerHelper->getConfigVersion();
         if (!empty($params)) {
             if (count($params) == 1) {
                 $to = array_shift($params);
@@ -79,23 +82,20 @@ class Data{
 
             $filename = $dir . 'data-upgrade-' . $from . '-' . $to . '.php';
             if (!is_file($filename)) {
-                file_put_contents($filename, $this->getTemplate('data_file', array()));
+                file_put_contents($filename, $_installerHelper->getTemplate('data_file', array()));
             }
 
             echo 'Upgrade data from ' . red() . $from . white() . ' to ' . red() . $to . white() . ".\n";
         } else {
             $filename = $dir . 'data-install-' . $version . '.php';
             if (!is_file($filename)) {
-                file_put_contents($filename, $this->getTemplate('data_file', array()));
+                file_put_contents($filename, $_installerHelper->getTemplate('data_file', array()));
             }
         }
 
         $_installationHelper = new InstallationHelper();
         $_installationHelper->reloadConfig();
 
-
         $_installationHelper->setLast(__FUNCTION__);
-
-
     }
 }

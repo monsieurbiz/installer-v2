@@ -32,6 +32,7 @@
 namespace Mbiz\Installer\Config;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Cron{
 
@@ -41,7 +42,7 @@ class Cron{
         // Cron name
         if (empty($params)) {
             do {
-                $line = $this->prompt('Identifier?');
+                $line = $_installerHelper->prompt('Identifier?');
             } while (empty($line));
         } else {
             $line = array_shift($params);
@@ -51,7 +52,7 @@ class Cron{
         // Minutes
         if (empty($params)) {
             do {
-                $line = $this->prompt('Minutes?');
+                $line = $_installerHelper->prompt('Minutes?');
             } while ($line === '');
         } else {
             $line = array_shift($params);
@@ -61,7 +62,7 @@ class Cron{
         // Hours
         if (empty($params)) {
             do {
-                $line = $this->prompt('Hours?');
+                $line = $_installerHelper->prompt('Hours?');
             } while ($line === '');
         } else {
             $line = array_shift($params);
@@ -71,7 +72,7 @@ class Cron{
         // Days (0-31)
         if (empty($params)) {
             do {
-                $line = $this->prompt('Days? (0-31)');
+                $line = $_installerHelper->prompt('Days? (0-31)');
             } while ($line === '');
         } else {
             $line = array_shift($params);
@@ -81,7 +82,7 @@ class Cron{
         // Month
         if (empty($params)) {
             do {
-                $line = $this->prompt('Month?');
+                $line = $_installerHelper->prompt('Month?');
             } while ($line === '');
         } else {
             $line = array_shift($params);
@@ -91,7 +92,7 @@ class Cron{
         // Week days (0-6)
         if (empty($params)) {
             do {
-                $line = $this->prompt('Days of week?');
+                $line = $_installerHelper->prompt('Days of week?');
             } while ($line === '');
         } else {
             $line = array_shift($params);
@@ -101,7 +102,7 @@ class Cron{
         // Model
         if (empty($params)) {
             do {
-                $line = $this->prompt('Model?');
+                $line = $_installerHelper->prompt('Model?');
             } while (empty($line));
         } else {
             $line = array_shift($params);
@@ -111,7 +112,7 @@ class Cron{
         // Method
         if (empty($params)) {
             do {
-                $line = $this->prompt('Method?');
+                $line = $_installerHelper->prompt('Method?');
             } while (empty($line));
         } else {
             $line = array_shift($params);
@@ -120,7 +121,8 @@ class Cron{
 
 
         // Now the Config
-        $config = $this->getConfig();
+        $_installerHelper = new InstallerHelper();
+        $config = $_installerHelper->getConfig();
         if (!isset($config->crontab)) {
             $config->addChild('crontab');
         }
@@ -135,6 +137,6 @@ class Cron{
         $cron->addChild('run')->addChild('model');
         $cron->run->model = sprintf('%s::%s', $model, $method);
 
-        $this->writeConfig();
+        $_installerHelper->writeConfig();
     }
 }

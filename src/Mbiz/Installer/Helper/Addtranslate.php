@@ -32,15 +32,16 @@ namespace Mbiz\Installer\Helper;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper\Translate as Translate;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Addtranslate extends BaseCommand
 {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $config = $this->getConfig();
-        if (!isset($config->frontend)) {
+        $_installerHelper = new InstallerHelper();
+        $config = $_installerHelper->getConfig();
+        if (!isset($_installerHelper->frontend)) {
             $config->addChild('frontend');
         }
         if (!isset($config->frontend->translate) && !isset($config->adminhtml->translate)) {
@@ -49,21 +50,20 @@ class Addtranslate extends BaseCommand
         }
 
         do {
-            $translate = $this->prompt('Translate?');
+            $translate = $_installerHelper->prompt('Translate?');
         } while (empty($translate));
 
         $translate = str_replace('"', '""', $translate);
-        $_installationHelper = new InstallationHelper();
 
-        foreach ($_installationHelper->getLocales() as $locale) {
-            $traduction = $this->prompt('Traduction for ' . red() . $locale . white() . '?');
+        foreach ($_installerHelper->getLocales() as $locale) {
+            $traduction = $_installerHelper->prompt('Traduction for ' . red() . $locale . white() . '?');
             if (empty($traduction)) {
                 $traduction = $translate;
             } else {
                 $traduction = str_replace('"', '""', $traduction);
             }
-            $dir = $this->getAppDir() . 'locale/' . $locale . '/';
-            $filename = $dir . $this->getModuleName() . '.csv';
+            $dir = $_installerHelper->getAppDir() . 'locale/' . $locale . '/';
+            $filename = $dir . $_installerHelper->getModuleName() . '.csv';
             if (is_dir($dir) && is_file($filename)) {
                 $fp = fopen($filename, 'a');
                 $str = '"' . $translate . '","' . $traduction . '"' . "\n";

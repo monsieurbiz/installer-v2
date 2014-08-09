@@ -32,24 +32,24 @@
 namespace Mbiz\Installer\Model;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Model extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $_installationHelper = new InstallationHelper();
+        $_installerHelper = new InstallerHelper();
 
         if (empty($params)) {
             do {
-                $name = ucfirst($this->prompt('Class?'));
+                $name = ucfirst($_installerHelper->prompt('Class?'));
             } while (empty($name));
         } else {
             $name = ucfirst(array_shift($params));
         }
         $officialName = $name;
 
-        list($dir, $created) = $_installationHelper->_createModelDir();
+        list($dir, $created) = $_installerHelper->_createModelDir();
 
         $names = array_map('ucfirst', explode('_', $name));
         $name = array_pop($names);
@@ -63,35 +63,35 @@ class Model extends BaseCommand
 
         $filename = $dir . $name . '.php';
         if (!is_file($filename)) {
-            file_put_contents($filename, $this->getTemplate('model_class', array(
+            file_put_contents($filename, $_installerHelper->getTemplate('model_class', array(
                 '{Name}' => implode('_', $names) . (empty($names) ? '' : '_') . $name,
                 'Mage_Core_Model_Abstract' => ($name == 'Session' ? 'Mage_Core_Model_Session_Abstract' : 'Mage_Core_Model_Abstract')
             )));
         }
 
         if (empty($params)) {
-            $params = explode(' ', $this->prompt('Methods?'));
+            $params = explode(' ', $_installerHelper->prompt('Methods?'));
         }
 
         $content = file_get_contents($filename);
-        $this->replaceVarsAndMethods($content, $params, $type);
+        $_installerHelper->replaceVarsAndMethods($content, $params, $type);
 
         // Other data
         if (isset($data['consts'])) {
-            $tag = $this->getTag('new_const');
+            $tag = $_installerHelper->getTag('new_const');
             $content = str_replace($tag, $data['consts'] . "\n$tag", $content);
         }
         if (isset($data['vars'])) {
-            $tag = $this->getTag('new_var');
+            $tag = $_installerHelper->getTag('new_var');
             $content = str_replace($tag, $data['vars'] . "\n$tag", $content);
         }
         if (isset($data['methods'])) {
-            $tag = $this->getTag('new_method');
+            $tag = $_installerHelper->getTag('new_method');
             $content = str_replace($tag, $data['methods'] . "\n$tag", $content);
         }
 
         file_put_contents($filename, $content);
 
-        $_installationHelper->setLast(__FUNCTION__, $officialName);
+        $_installerHelper->setLast(__FUNCTION__, $officialName);
     }
 }

@@ -33,19 +33,30 @@ namespace Mbiz\Installer\Config;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper\Helper as Helper;
+use Mbiz\Installer\Helper as InstallerHelper;
+use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
 class System{
 
     protected function execute(array $params)
     {
-        $_helper = new Helper();
-        $_helper->execute(array('data', '-'));
+        // Helper data
+        $command = $this->getApplication()->find('helper');
+        $arguments = array(
+            'command' => 'helper',
+            'params'    => array('data', '-')
+        );
 
-        $dir = $this->getModuleDir('etc');
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
+
+        $_installerHelper = new InstallerHelper();
+
+        $dir = $_installerHelper->getModuleDir('etc');
 
         if (!is_file($filename = $dir . '/system.xml')) {
-            file_put_contents($filename, $this->getTemplate('system_xml', array(
-                '{module}' => strtolower($this->getModuleName())
+            file_put_contents($filename, $_installerHelper->getTemplate('system_xml', array(
+                '{module}' => strtolower($_installerHelper->getModuleName())
             )));
         }
     }

@@ -381,14 +381,6 @@ class Helper {
         return $dir;
     }
 
-    public function getModuleTitle()
-    {
-        if (!$this->_namespace) {
-            return null;
-        }
-        return sprintf('%s %s', $this->_namespace, $this->_module);
-    }
-
     public function getModuleName()
     {
         if (!$this->_namespace) {

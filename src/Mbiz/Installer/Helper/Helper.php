@@ -31,14 +31,14 @@
 namespace Mbiz\Installer\Helper;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Helper
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
         if (empty($params)) {
-            $name = ucfirst($this->prompt('Class? (enter for Data)'));
+            $name = ucfirst($_installerHelper->prompt('Class? (enter for Data)'));
             if (empty($name)) {
                 $name = 'Data';
             }
@@ -48,18 +48,18 @@ class Helper
         $officialName = $name;
 
         // Create file
-        list($dir, $created) = $this->getModuleDir('Helper', true);
-
+        list($dir, $created) = $_installerHelper->getModuleDir('Helper', true);
+        $_installerHelper = new InstallerHelper();
         if ($created) {
-            $config = $this->getConfig();
+            $config = $_installerHelper->getConfig();
             if (!isset($config->global)) {
                 $config->addChild('global');
             }
             $global = $config->global;
             if (!isset($global['helpers'])) {
-                $global->addChild('helpers')->addChild(strtolower($this->getModuleName()))->addChild('class', $this->getModuleName() . '_Helper');
+                $global->addChild('helpers')->addChild(strtolower($_installerHelper->getModuleName()))->addChild('class', $_installerHelper->getModuleName() . '_Helper');
             }
-            $this->writeConfig();
+            $_installerHelper->writeConfig();
         }
 
         $names = array_map('ucfirst', explode('_', $name));
@@ -74,19 +74,18 @@ class Helper
 
         $filename = $dir . $name . '.php';
         if (!is_file($filename)) {
-            file_put_contents($filename, $this->getTemplate('helper_class', array('{Name}' => implode('_', $names) . (empty($names) ? '' : '_') . $name)));
+            file_put_contents($filename, $_installerHelper->getTemplate('helper_class', array('{Name}' => implode('_', $names) . (empty($names) ? '' : '_') . $name)));
         }
 
         if (empty($params)) {
-            $params = explode(' ', $this->prompt('Methods?'));
+            $params = explode(' ', $_installerHelper->prompt('Methods?'));
         }
 
-        $_installationHelper = new InstallationHelper();
         $content = file_get_contents($filename);
-        $_installationHelper->replaceVarsAndMethods($content, $params);
+        $_installerHelper->replaceVarsAndMethods($content, $params);
         file_put_contents($filename, $content);
 
-        $_installationHelper->setLast(__FUNCTION__, $officialName);
+        $_installerHelper->setLast(__FUNCTION__, $officialName);
     }
 
 }

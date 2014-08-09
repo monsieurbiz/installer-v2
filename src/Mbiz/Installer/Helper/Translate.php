@@ -32,17 +32,20 @@ namespace Mbiz\Installer\Helper;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper\Helper as Helper;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
+use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
 class Translate extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $_installerHelper = new InstallerHelper();
+
         if (!empty($params) && in_array($params[0], array('admin', 'front'))) {
             $where = $params[0];
         } else {
             do {
-                $where = $this->prompt('Where? (enter for front)');
+                $where = $_installerHelper->prompt('Where? (enter for front)');
                 if (empty($where)) {
                     $where = 'front';
                 }
@@ -55,35 +58,41 @@ class Translate extends BaseCommand
             $where = 'frontend';
         }
 
-        $config = $this->getConfig();
+        $config = $_installerHelper->getConfig();
 
         if (!isset($config->{$where})) {
             $config->addChild($where);
         }
 
         if (!isset($config->{$where}->translate)) {
-            $_helper = new Helper();
-            $_helper->execute(array('data', '-'));
+            // Helper data
+            $command = $this->getApplication()->find('helper');
+            $arguments = array(
+                'command' => 'helper',
+                'params'    => array('data', '-')
+            );
+
+            $input = new ArrayInput($arguments);
+            $command->run($input, $output);
             $config->{$where}
                 ->addChild('translate')
                 ->addChild('modules')
-                ->addChild($this->getModuleName())
+                ->addChild($_installerHelper->getModuleName())
                 ->addChild('files')
-                ->addChild('default', $this->getModuleName() . '.csv');
-            $this->writeConfig();
+                ->addChild('default', $_installerHelper->getModuleName() . '.csv');
+            $_installerHelper->writeConfig();
 
-            foreach ($_installationHelper->getLocales() as $locale) {
-                $dir = $this->getAppDir() . 'locale/' . $locale . '/';
+            foreach ($_installerHelper->getLocales() as $locale) {
+                $dir = $_installerHelper->getAppDir() . 'locale/' . $locale . '/';
                 if (!is_dir($dir)) {
                     mkdir($dir);
                 }
-                touch($dir . $this->getModuleName() . '.csv');
+                touch($dir . $_installerHelper->getModuleName() . '.csv');
             }
         }
 
         $this->_processReloadConfig();
 
-        $_installationHelper = new InstallationHelper();
-        $_installationHelper->setLast(__FUNCTION__);
+        $_installerHelper->setLast(__FUNCTION__);
     }
 }
