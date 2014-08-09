@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class General{
 
-    public function execute(array $params)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         // If no config file
         if (false === $local = $this->_getLocalXml()) {

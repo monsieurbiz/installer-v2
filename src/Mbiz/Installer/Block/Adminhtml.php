@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Adminhtml{
 
-    public function execute(array $params)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->_processHelper(array('data', '-'));
 

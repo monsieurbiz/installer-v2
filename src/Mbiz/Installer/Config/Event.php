@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Event{
 
-    public function execute(array $params)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         if (empty($params)) {
             do {
