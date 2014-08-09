@@ -39,7 +39,7 @@ use Mbiz\Installer\Controller\Controller as Controller;
 use Mbiz\Installer\Router\Router as Router;
 use Mbiz\Installer\Helper as InstallerHelper;
 
-class Grid{
+class Grid extends BaseCommand {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {

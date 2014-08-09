@@ -36,8 +36,7 @@ use Mbiz\Installer\Config\Defaultconfig as Defaulconfig;
 use Mbiz\Installer\Model\Model as Model;
 use Mbiz\Installer\Helper as InstallerHelper;
 
-class Email
-{
+class Email extends BaseCommand {
 
     /**
      * Create a custom email template with the good configuration and file

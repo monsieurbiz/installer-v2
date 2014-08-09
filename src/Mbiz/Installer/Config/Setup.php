@@ -34,7 +34,7 @@ namespace Mbiz\Installer\Config;
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper as InstallerHelper;
 
-class Setup{
+class Setup extends BaseCommand {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {

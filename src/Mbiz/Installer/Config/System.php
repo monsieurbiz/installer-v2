@@ -36,7 +36,7 @@ use Mbiz\Installer\Helper\Helper as Helper;
 use Mbiz\Installer\Helper as InstallerHelper;
 use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
-class System{
+class System extends BaseCommand {
 
     protected function execute(array $params)
     {

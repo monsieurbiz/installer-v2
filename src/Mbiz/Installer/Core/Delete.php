@@ -34,7 +34,7 @@ namespace Mbiz\Installer\Core;
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper as InstallerHelper;
 
-class Delete{
+class Delete extends BaseCommand {
 
     protected function execute()
     {

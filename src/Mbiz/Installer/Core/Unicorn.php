@@ -35,8 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Unicorn extends BaseCommand
-{
+class Unicorn extends BaseCommand {
 
     /**
      * Configure the Command

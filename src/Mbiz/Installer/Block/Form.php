@@ -40,7 +40,7 @@ use Mbiz\Installer\Router\Router as Router;
 use Mbiz\Installer\Helper as InstallerHelper;
 use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
-class Form{
+class Form extends BaseCommand  {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {

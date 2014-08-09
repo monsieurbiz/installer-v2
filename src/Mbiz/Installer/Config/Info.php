@@ -38,7 +38,7 @@ use Mbiz\Installer\Config\Info\Router as InfoLayout;
 use Mbiz\Installer\Config\Info\Router as InfoTranslate;
 use Mbiz\Installer\Helper as InstallerHelper;
 
-class Info{
+class Info extends BaseCommand {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
