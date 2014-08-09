@@ -32,12 +32,14 @@
 namespace Mbiz\Installer\Config\System;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper\Helper as Helper;
 
 class System{
 
     protected function execute(array $params)
     {
-        $this->_processHelper(array('data', '-'));
+        $_helper = new Helper();
+        $_helper->execute(array('data', '-'));
 
         $dir = $this->getModuleDir('etc');
 

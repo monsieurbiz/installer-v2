@@ -32,12 +32,14 @@
 namespace Mbiz\Installer\Block\Adminhtml;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper\Helper as Helper;
 
 class Adminhtml{
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->_processHelper(array('data', '-'));
+        $_helper = new Helper();
+        $_helper->execute(array('data', '-'));
 
         $dir = $this->getModuleDir('etc');
 

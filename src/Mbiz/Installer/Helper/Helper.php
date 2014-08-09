@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of Installer version 2.
  *
@@ -29,6 +28,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+namespace Mbiz\Installer\Helper\Helper;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
 class Helper
 {
     public function execute(InputInterface $input, OutputInterface $output)
@@ -83,4 +86,5 @@ class Helper
 
         $this->setLast(__FUNCTION__, $officialName);
     }
+
 }

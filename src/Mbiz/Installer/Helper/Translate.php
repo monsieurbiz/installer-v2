@@ -28,10 +28,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
-namespace Mbiz\Installer\Routers\Translate;
+namespace Mbiz\Installer\Helper\Translate;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-
+use Mbiz\Installer\Helper\Helper as Helper;
 
 class Translate extends BaseCommand
 {
@@ -61,7 +61,8 @@ class Translate extends BaseCommand
         }
 
         if (!isset($config->{$where}->translate)) {
-            $this->_processHelper(array('data', '-'));
+            $_helper = new Helper();
+            $_helper->execute(array('data', '-'));
             $config->{$where}
                 ->addChild('translate')
                 ->addChild('modules')

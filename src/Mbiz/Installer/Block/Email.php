@@ -32,6 +32,8 @@
 namespace Mbiz\Installer\Block\Email;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Config\Defaultconfig as Defaulconfig;
+use Mbiz\Installer\Model\Model as Model;
 
 class Email
 {
@@ -80,13 +82,15 @@ class Email
         $node->addChild('type', 'html');
 
         // Default configuration
-        $this->_processDefault(array($moduleName . '/email/' . $name, $moduleName . '_email_' . $name));
+        $_defaultConfig = new Defaulconfig();
+        $_defaultConfig->execute(array($moduleName . '/email/' . $name, $moduleName . '_email_' . $name));
 
         // Save configuration
         $this->writeconfig();
 
         // Model
-        $this->_processModel(array(
+        $_model = new Model();
+        $_model->execute(array(
             'email',
             'CONFIG_KEY_EMAIL_' . strtoupper($name) . "=$moduleName/email/$name"
         ), 'model', array(

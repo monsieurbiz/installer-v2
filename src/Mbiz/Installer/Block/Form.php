@@ -32,6 +32,11 @@
 namespace Mbiz\Installer\Block\Form;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper\Helper as Helper;
+use Mbiz\Installer\Config\Resources as Resources;
+use Mbiz\Installer\Model\Entity as Entity;
+use Mbiz\Installer\Controller\Controller as Controller;
+use Mbiz\Installer\Router\Router as Router;
 
 class Form{
 
@@ -47,7 +52,8 @@ class Form{
         }
 
         // Check entity exists
-        $this->_processResources(array());
+        $_resources = new Resources();
+        $_resources->execute(array());
 
         $config = $this->getConfig();
         if (!isset($config->global)) {
@@ -56,7 +62,8 @@ class Form{
         $resourceModel = $config->global->models->{strtolower($this->getModuleName())}->resourceModel;
         $entities = $config->global->models->{$resourceModel}->entities;
         if (!$entities->{strtolower($entity)}) {
-            $this->_processEntity(array($entity));
+            $_entity = new Entity();
+            $_entity->execute(array($entity));
         }
         unset($config);
 
@@ -122,12 +129,15 @@ class Form{
         ));
 
         // Grid controller..
-        $this->_processController(array('adminhtml_' . strtolower($this->_module) .'_'. strtolower($entity) , '-'), compact('methods'));
+        $_controller = new Controller();
+        $_controller->execute(array('adminhtml_' . strtolower($this->_module) .'_'. strtolower($entity) , '-'), compact('methods'));
 
         // Helper data
-        $this->_processHelper(array('data', '-'));
+        $_helper = new Helper();
+        $_helper->execute(array('data', '-'));
 
         // Router
-        $this->_processRouter(array('admin'));
+        $_router = new Router();
+        $_router->execute(array('admin'));
     }
 }
