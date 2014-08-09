@@ -33,6 +33,8 @@ namespace Mbiz\Installer;
 
 use Symfony\Component\Console\Application as BaseApplication;
 use Mbiz\Installer\Shell;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class Application extends BaseApplication
 {
