@@ -33,7 +33,6 @@
 namespace Mbiz\Installer\Model;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Config\Resources as Resources;
 use Mbiz\Installer\Helper as InstallerHelper;
 
 class Entity
@@ -41,8 +40,11 @@ class Entity
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $_resources = new Resources();
-        $_resources->execute($input, $output);
+
+        $command = $this->getApplication()->find('resources');
+        $command->run($input, $output);
+
+        $_installerHelper = new InstallerHelper();
 
         if (empty($params)) {
             do {
@@ -64,8 +66,6 @@ class Entity
         if (!empty($params)) {
             $noFiles = (array_shift($params) == '-');
         }
-
-        $_installerHelper = new InstallerHelper();
 
         $config = $_installerHelper->getConfig();
         if (!isset($config->global)) {

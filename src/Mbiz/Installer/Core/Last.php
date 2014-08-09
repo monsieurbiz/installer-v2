@@ -35,11 +35,11 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Last extends BaseCommand {
 
-    protected function execute(array $params)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         if (null !== $this->_lastMethod) {
             $name = $this->_lastMethod;
-            $this->$name(array_merge($this->_lastParams, $params));
+            $this->$name(array_merge($this->_lastParams, $input->getParams()));
         }
     }
 }

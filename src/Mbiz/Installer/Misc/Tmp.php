@@ -32,26 +32,42 @@
 namespace Mbiz\Installer\Misc;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Core\Module as Module;
-use Mbiz\Installer\Router\Router as Router;
-use Mbiz\Installer\Controller\Controller as Controller;
+use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
 class Tmp extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $_module = new Module();
-        $_module->execute(array(self::$_config->company_name_short, 'tmp', 'local'), true);
+        $command = $this->getApplication()->find('module');
+        $arguments = array(
+            'command' => 'module',
+            'params'    => array(array(self::$_config->company_name_short, 'tmp', 'local'), true)
+        );
 
-        // Router
-        $_router = new Router();
-        $_router->execute(array('front', 'tmp'));
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
+
+        $command = $this->getApplication()->find('router');
+        $arguments = array(
+            'command' => 'router',
+            'params'    => array('front', 'tmp')
+        );
+
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
 
         if (empty($params)) {
             $params = array('index');
         }
         array_unshift($params, 'index');
-        $_controller = new Controller();
-        $_controller->execute($params);
+
+        $command = $this->getApplication()->find('controller');
+        $arguments = array(
+            'command' => 'controller',
+            'params'    => array('data', $params)
+        );
+
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
     }
 }

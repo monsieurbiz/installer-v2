@@ -32,12 +32,8 @@
 namespace Mbiz\Installer\Block;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper\Helper as Helper;
-use Mbiz\Installer\Config\Resources as Resources;
-use Mbiz\Installer\Model\Entity as Entity;
-use Mbiz\Installer\Controller\Controller as Controller;
-use Mbiz\Installer\Router\Router as Router;
 use Mbiz\Installer\Helper as InstallerHelper;
+use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
 class Grid extends BaseCommand {
 
@@ -132,8 +128,14 @@ class Grid extends BaseCommand {
         ));
 
         // Grid controller..
-        $_controller = new Controller();
-        $_controller->execute(array('adminhtml_' . strtolower($this->_module) . '_' . strtolower($entity), '-'), compact('methods'));
+        $command = $this->getApplication()->find('controller');
+        $arguments = array(
+            'command' => 'controller',
+            'params'    => array('adminhtml_' . strtolower($this->_module) . '_' . strtolower($entity), '-'), compact('methods')
+        );
+
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
 
         // Helper data
         $command = $this->getApplication()->find('helper');

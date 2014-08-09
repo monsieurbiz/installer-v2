@@ -31,8 +31,8 @@
 namespace Mbiz\Installer\Helper;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper\Translate as Translate;
 use Mbiz\Installer\Helper as InstallerHelper;
+use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
 class Addtranslate extends BaseCommand
 {
@@ -45,8 +45,8 @@ class Addtranslate extends BaseCommand
             $config->addChild('frontend');
         }
         if (!isset($config->frontend->translate) && !isset($config->adminhtml->translate)) {
-            $_translate = new Translate();
-            $_translate->execute($input, $output);
+            $command = $this->getApplication()->find('translate');
+            $command->run($input, $output);
         }
 
         do {

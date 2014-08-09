@@ -32,19 +32,25 @@
 namespace Mbiz\Installer\Misc;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Core\Module as Module;
-use Mbiz\Installer\Model\Model as Model;
-
+use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
 class Session extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $_module = new Module();
-        $_module->execute();
+        $command = $this->getApplication()->find('module');
+        $command->run($input, $output);
+
         array_unshift($params, '_construct:this/p'); // method
         array_unshift($params, 'session'); // class
-        $_model = new Model();
-        $_model->execute($params);
+
+        $command = $this->getApplication()->find('model');
+        $arguments = array(
+            'command' => 'model',
+            'params'    => array('data', $params)
+        );
+
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
     }
 }

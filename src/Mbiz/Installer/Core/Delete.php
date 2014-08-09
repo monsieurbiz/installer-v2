@@ -36,7 +36,7 @@ use Mbiz\Installer\Helper as InstallerHelper;
 
 class Delete extends BaseCommand {
 
-    protected function execute()
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $_installerHelper = new InstallerHelper();
         do {

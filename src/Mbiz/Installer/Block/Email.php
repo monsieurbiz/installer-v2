@@ -32,9 +32,8 @@
 namespace Mbiz\Installer\Block;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Config\Defaultconfig as Defaulconfig;
-use Mbiz\Installer\Model\Model as Model;
 use Mbiz\Installer\Helper as InstallerHelper;
+use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
 class Email extends BaseCommand {
 
@@ -43,6 +42,9 @@ class Email extends BaseCommand {
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $_installerHelper = new InstallerHelper();
+
         // Get email name
         if (empty($params)) {
             do {
@@ -51,7 +53,6 @@ class Email extends BaseCommand {
         }
         $name = strtolower($name);
 
-        $_installerHelper = new InstallerHelper();
         // Configuration
         $config = $_installerHelper->getConfig();
 
@@ -83,24 +84,37 @@ class Email extends BaseCommand {
         $node->addChild('type', 'html');
 
         // Default configuration
-        $_defaultConfig = new Defaulconfig();
-        $_defaultConfig->execute(array($moduleName . '/email/' . $name, $moduleName . '_email_' . $name));
+        $command = $this->getApplication()->find('defaultconfig');
+        $arguments = array(
+            'command' => 'defaultconfig',
+            'params'    => array($moduleName . '/email/' . $name, $moduleName . '_email_' . $name)
+        );
+
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
 
         // Save configuration
         $_installerHelper->writeconfig();
 
         // Model
-        $_model = new Model();
-        $_model->execute(array(
-            'email',
-            'CONFIG_KEY_EMAIL_' . strtoupper($name) . "=$moduleName/email/$name"
-        ), 'model', array(
-            'methods' => $_installerHelper->getTemplate('email_method', array(
-                '{NAME}' => strtoupper($name),
-                '{methodName}' => lcfirst($_installerHelper->_camelize('send_' . $name)),
-                '{name}' => $name
-            ))
-        ));
+        // Default configuration
+        $command = $this->getApplication()->find('model');
+        $arguments = array(
+            'command' => 'model',
+            'params'    => array(
+                'email',
+                'CONFIG_KEY_EMAIL_' . strtoupper($name) . "=$moduleName/email/$name"
+            ), 'model', array(
+                'methods' => $_installerHelper->getTemplate('email_method', array(
+                    '{NAME}' => strtoupper($name),
+                    '{methodName}' => lcfirst($_installerHelper->_camelize('send_' . $name)),
+                    '{name}' => $name
+                ))
+            )
+        );
+
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
 
         // The file
         $appDir = $_installerHelper->getAppDir();

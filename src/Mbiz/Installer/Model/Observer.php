@@ -32,19 +32,19 @@
 namespace Mbiz\Installer\Model;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Core\Module as Module;
-use Mbiz\Installer\Model\Model as Model;
+use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
 class Observer extends BaseCommand
 {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $_module = new Module();
-        $_module->execute();
+        $command = $this->getApplication()->find('module');
+        $command->run($input, $output);
 
-        $_model = new Model();
-        $_model->execute($input, 'observer');
+        $command = $this->getApplication()->find('model');
+        $command->run($input, $output);
+
     }
 
 }
