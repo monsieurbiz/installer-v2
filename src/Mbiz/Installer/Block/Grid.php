@@ -52,8 +52,8 @@ class Grid{
         }
 
         // Check entity exists
-        $_resources = new Resources();
-        $_resources->execute(array());
+        $command = $this->getApplication()->find('resources');
+        $command->run($input, $output);
 
         $config = $this->getConfig();
         if (!isset($config->global)) {
@@ -62,8 +62,15 @@ class Grid{
         $resourceModel = $config->global->models->{strtolower($this->getModuleName())}->resourceModel;
         $entities = $config->global->models->{$resourceModel}->entities;
         if (!$entities->{strtolower($entity)}) {
-            $_entity = new Entity();
-            $_entity->execute(array($entity));
+            $command = $this->getApplication()->find('entity');
+            $arguments = array(
+                'command' => 'entity',
+                'params'    => $entity
+            );
+
+            $input = new ArrayInput($arguments);
+            $command->run($input, $output);
+
         }
         unset($config);
 
@@ -126,11 +133,23 @@ class Grid{
         $_controller->execute(array('adminhtml_' . strtolower($this->_module) . '_' . strtolower($entity), '-'), compact('methods'));
 
         // Helper data
-        $_helper = new Helper();
-        $_helper->execute(array('data', '-'));
+        $command = $this->getApplication()->find('helper');
+        $arguments = array(
+            'command' => 'helper',
+            'params'    => array('data', '-')
+        );
+
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
 
         // Router
-        $_router = new Router();
-        $_router->execute(array('admin'));
+        $command = $this->getApplication()->find('router');
+        $arguments = array(
+            'command' => 'router',
+            'params'    => array('admin')
+        );
+
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
     }
 }
