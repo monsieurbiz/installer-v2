@@ -52,49 +52,51 @@ class Unicorn extends BaseCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeLn("
-                                ,
-                                :
-                               ,.
-                              ,,
-                              ,,
-                         Ej E:,,
-                       t  E  ,
-                     ttt     ,,
-                    tt;,,   ,,,,
-                   tt,,, G  ,,,,, .t
-                  tt,,it:L  t,,,,it,t
-                  t,,,tt;EEDitt,,,,tt
-                 tt,,tt EEEEE,tttttt
-                 t;,,ttEEEE:EE ;ttt
-                 t,,tt EEEE EEEEEED
-                 t,,tt EEEE EEEEEEE
-                 t,,tt.EEEEEEEEEEEEE
- .tt          t it,,ttfEEEEEEEEEEEEEE
-  ,tt        i;,,t,,ttEEEEEEEEEEEEEEEE
-  ,,tt: :,    ,,,t,,ttEEEEEEEEEEEEEEEE
-  t,,ttttttt  :t,,,,ttEEEiEEEEEEEEEEEEE
-  t,,,,;tttt   iii,,t EEEEEEEEEEEEEEEEE
-  t;,,,,,,tt EE:,,,;tGEEEE EEEEEEED EEE
-  tt,,,,,,,fEEEE,,; tEEEEE iEEEEEEEEEEE
-  ttt,,,,,.EEEEEEffDEEEEEE  EEEEEEEEEEE
-   tttti;tDEEEEEEEEEEEEEE    EEEEEEEEE
-    ttttttDEEEEEEEEEEEEEE     EEEEEE
-     ,ttttEEEEEEEEEEEEEEE
-           EEEEEEEEEEEEEE
-        :EEEEEEEEEEEEEEEL
-     :EEEEEEEEEEEEEEEEEDD.
-  . EEEEEEE E EEEEEEDEEEtEE
-  ,.DEEEE EE     jEE. EEE:EE
-  ,, EELEEE           EEEE EEL
-  :,, .EEt            ;EEEE;EE,.
-     ,,.               EED ,.,,,,
-     :,                i.,,,,,,,
-                         ,,,,,,:
-                         ,,, :,
-                           ,,,
-                         ,,,,
-                                        ", OutputInterface::OUTPUT_RAW);
+        $unicorn = <<<UNICORN
+                                            ,
+                                            :
+                                           ,.
+                                          ,,
+                                          ,,
+                                     Ej E:,,
+                                   t  E  ,
+                                 ttt     ,,
+                                tt;,,   ,,,,
+                               tt,,, G  ,,,,, .t
+                              tt,,it:L  t,,,,it,t
+                              t,,,tt;EEDitt,,,,tt
+                             tt,,tt EEEEE,tttttt
+                             t;,,ttEEEE:EE ;ttt
+                             t,,tt EEEE EEEEEED
+                             t,,tt EEEE EEEEEEE
+                             t,,tt.EEEEEEEEEEEEE
+             .tt          t it,,ttfEEEEEEEEEEEEEE
+              ,tt        i;,,t,,ttEEEEEEEEEEEEEEEE
+              ,,tt: :,    ,,,t,,ttEEEEEEEEEEEEEEEE
+              t,,ttttttt  :t,,,,ttEEEiEEEEEEEEEEEEE
+              t,,,,;tttt   iii,,t EEEEEEEEEEEEEEEEE
+              t;,,,,,,tt EE:,,,;tGEEEE EEEEEEED EEE
+              tt,,,,,,,fEEEE,,; tEEEEE iEEEEEEEEEEE
+              ttt,,,,,.EEEEEEffDEEEEEE  EEEEEEEEEEE
+               tttti;tDEEEEEEEEEEEEEE    EEEEEEEEE
+                ttttttDEEEEEEEEEEEEEE     EEEEEE
+                 ,ttttEEEEEEEEEEEEEEE
+                       EEEEEEEEEEEEEE
+                    :EEEEEEEEEEEEEEEL
+                 :EEEEEEEEEEEEEEEEEDD.
+              . EEEEEEE E EEEEEEDEEEtEE
+              ,.DEEEE EE     jEE. EEE:EE
+              ,, EELEEE           EEEE EEL
+              :,, .EEt            ;EEEE;EE,.
+                 ,,.               EED ,.,,,,
+                 :,                i.,,,,,,,
+                                     ,,,,,,:
+                                     ,,, :,
+                                       ,,,
+                                     ,,,,
+
+UNICORN;
+        $output->writeLn($unicorn, OutputInterface::OUTPUT_RAW);
     }
 
 }
