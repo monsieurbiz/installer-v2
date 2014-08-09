@@ -142,8 +142,8 @@ class Module extends BaseCommand
         $_installerHelper = new InstallerHelper();
         $_installerHelper->setLast();
 
-        // Start a new shell
-        $this->getApplication()->setShellPrompt(sprintf('%s_%s in %s', $vendor, $module, $pool));
+        // Init the module
+        $this->getApplication()->initModule($vendor, $module, $pool);
     }
 
 }

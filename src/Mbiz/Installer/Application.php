@@ -32,6 +32,7 @@
 namespace Mbiz\Installer;
 
 use Symfony\Component\Console\Application as BaseApplication;
+use Mbiz\Installer\Magento\Module;
 
 class Application extends BaseApplication
 {
@@ -69,11 +70,16 @@ class Application extends BaseApplication
 
         $this->_runShell = (bool) $runShell;
 
+        // Init the basic module
+        $this->_module = new Module;
+
+        // Commands
         $this->add(new Hello\Hello);
         $this->add(new Core\Unicorn);
         $this->add(new Core\Module);
         $this->add(new Misc\Doc);
 
+        // Run the Installer shell
         $this->runShell();
     }
 
@@ -101,6 +107,24 @@ class Application extends BaseApplication
             $this->_shell->setPrompt($prompt);
         }
         return $this;
+    }
+
+    /**
+     * Retrieve the module
+     * @return \Mbiz\Installer\Magento\Module
+     */
+    public function getModule()
+    {
+        return $this->_module;
+    }
+
+    /**
+     * Init the next module
+     */
+    public function initModule($vendor, $module, $pool)
+    {
+        $this->setShellPrompt(sprintf('%s_%s in %s', $vendor, $module, $pool));
+        $this->getModule()->reinit($vendor, $module, $pool);
     }
 
 }
