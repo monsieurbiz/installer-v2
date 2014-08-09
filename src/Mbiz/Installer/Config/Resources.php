@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Resources extends BaseCommand
 {
-    protected function _process(array $params)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         list($dir, $created) = $this->_createModelDir();
 

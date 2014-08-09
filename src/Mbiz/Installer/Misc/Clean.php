@@ -38,7 +38,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 class Clean
 {
 
-    protected function _process(array $params)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $cache = false;
         $logs = false;

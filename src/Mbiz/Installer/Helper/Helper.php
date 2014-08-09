@@ -31,7 +31,7 @@
  */
 class Helper
 {
-    protected function _process(array $params)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         if (empty($params)) {
             $name = ucfirst($this->prompt('Class? (enter for Data)'));

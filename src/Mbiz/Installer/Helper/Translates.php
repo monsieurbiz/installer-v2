@@ -35,9 +35,10 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Translate extends BaseCommand
 {
-
-
-$this->_processTranslate(array('admin'));
-$this->_processTranslate(array('front'));
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->_processTranslate(array('admin'));
+        $this->_processTranslate(array('front'));
+    }
 
 }

@@ -36,7 +36,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Doc extends BaseCommand
 {
-    protected function _process(array $params)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         // Title?
         if (!empty($params)) {

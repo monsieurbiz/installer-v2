@@ -36,7 +36,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 class Translate extends BaseCommand
 {
 
-    protected function _processAddTranslate()
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $config = $this->getConfig();
         if (!isset($config->frontend)) {
