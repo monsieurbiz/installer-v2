@@ -35,8 +35,21 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper\Helper as Helper;
 use Mbiz\Installer\Helper as InstallerHelper;
 use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
+use Symfony\Component\Console\Input\InputArgument;
 
 class Adminhtml extends BaseCommand {
+
+    /**
+     * Configure the Command
+     * @return \Mbiz\Installer\Block\Adminhtml
+     */
+    public function configure()
+    {
+        return $this
+            ->setName('adminhtml')
+            ->setDescription('Create adminhtml section (menu items + acl)')
+            ;
+    }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
