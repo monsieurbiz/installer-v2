@@ -77,52 +77,65 @@ class Module extends BaseCommand
     {
         // Vendor name
         $vendor = $input->getArgument('vendor');
-        if (!$vendor) {
+        $checkVendor = function ($answer) {
+            if (!$answer) {
+                throw new \RunTimeException(
+                    "You need to specify a vendor name."
+                );
+            }
+            return $answer;
+        };
+
+        try {
+            $vendor = $checkVendor($vendor);
+        } catch (\RunTimeException $e) {
             $vendor = $this->getDialog()->askAndValidate(
                 $output,
                 'Please enter the module\'s vendor name:',
-                function ($answer) {
-                    if (!$answer) {
-                        throw new \RunTimeException(
-                            "You need to specify a vendor name."
-                        );
-                    }
-                    return $answer;
-                }
+                $checkVendor
             );
         }
 
         // Module name
         $module = $input->getArgument('module');
-        if (!$module) {
+        $checkModule = function ($answer) {
+            if (!$answer) {
+                throw new \RunTimeException(
+                    "You need to specify a module name."
+                );
+            }
+            return $answer;
+        };
+
+        try {
+            $module = $checkModule($module);
+        } catch (\RunTimeException $e) {
             $module = $this->getDialog()->askAndValidate(
                 $output,
                 'Please enter the module\'s name:',
-                function ($answer) {
-                    if (!$answer) {
-                        throw new \RunTimeException(
-                            "You need to specify a name."
-                        );
-                    }
-                    return $answer;
-                }
+                $checkModule
             );
         }
 
         // Pool
-        $pool = $input->getArgument('pool');
-        if (!$pool) {
+        $checkPool = function ($answer) {
+            if (!$answer || !in_array($answer, ['local', 'community'])) {
+                throw new \RunTimeException(
+                    "You need to specify a pool: community or local."
+                );
+            }
+            return $answer;
+        };
+        try {
+            $pool = $checkPool($input->getArgument('pool'));
+        } catch (\RunTimeException $e) {
+            $output->writeLn('<error>' . $e->getMessage() . '</error>');
             $pool = $this->getDialog()->askAndValidate(
                 $output,
-                'Please enter the module\'s pool:',
-                function ($answer) {
-                    if (!$answer) {
-                        throw new \RunTimeException(
-                            "You need to specify a pool."
-                        );
-                    }
-                    return $answer;
-                }
+                'Please enter the module\'s pool, <comment>community or local (by default)</comment>:',
+                $checkPool,
+                false,
+                'local'
             );
         }
 
