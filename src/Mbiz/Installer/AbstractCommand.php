@@ -6,12 +6,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * Installer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Installer.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -31,44 +31,26 @@
 
 namespace Mbiz\Installer;
 
-use Symfony\Component\Console\Application as BaseApplication;
-use Mbiz\Installer\Shell;
 
-class Application extends BaseApplication
-{
-
-    /**
-     * Name of the Application
-     * @const APP_NAME string
-     */
-    const APP_NAME = 'Installer';
-
-    /**
-     * Version of the Application
-     * @const APP_VERSION string
-     */
-    const APP_VERSION = '2.0.0@dev';
-
-    /**
-     * Construct the Application
-     */
-    public function __construct()
+class AbstractCommand {
+    protected function _processResources(array $params)
     {
-        parent::__construct(self::APP_NAME, self::APP_VERSION);
+        list($dir, $created) = $this->_createModelDir();
 
-        $this->add(new Hello\Hello);
+        $config = $this->getConfig();
+        $models = $config->global->models;
 
-        $this->runShell();
+        if (!$models->{strtolower($this->getModuleName())}->resourceModel) {
+            $models->{strtolower($this->getModuleName())}->addChild('resourceModel', strtolower($this->getModuleName()) . '_resource');
+            $resource = $models->addChild(strtolower($this->getModuleName()) . '_resource');
+            $resource->addChild('class', $this->getModuleName() . '_Model_Resource');
+            $resource->addChild('entities');
+            $this->writeConfig();
+            @mkdir($dir = $dir . 'Resource/');
+        }
+
+        $this->_processReloadConfig();
+
+        $this->setLast(__FUNCTION__);
     }
-
-    /**
-     * Start the Installer's shell
-     */
-    public function runShell()
-    {
-        $shell = new Shell($this);
-        $shell->run();
-    }
-
-}
-
+} 
