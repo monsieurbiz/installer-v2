@@ -89,6 +89,7 @@ class Shell extends BaseShell
     /**
      * Retrieve the Header text
      * @return string
+     * @codeCoverageIgnore
      */
     protected function getHeader()
     {
@@ -108,6 +109,7 @@ EOF;
      * Set the prompt
      * @param string $prompt
      * @return \Mbiz\Installer\Shell
+     * @codeCoverageIgnore
      */
     public function setPrompt($prompt = null)
     {

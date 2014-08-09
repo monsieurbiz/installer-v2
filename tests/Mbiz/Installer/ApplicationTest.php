@@ -17,15 +17,9 @@ class ApplicationTest extends TestCase
      */
     public function execute()
     {
-        /**
-         * Check autoloading
-         */
-
         $application = $this->getApplication();
-
         /* @var $application Application */
         $this->assertInstanceOf('\Mbiz\Installer\Application', $application);
-
     }
 
 }
