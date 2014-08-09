@@ -56,7 +56,7 @@ class Application extends BaseApplication
     {
         parent::__construct(self::APP_NAME, self::APP_VERSION);
 
-        $this->add(new Hello);
+        $this->add(new Hello\Hello);
 
         $this->runShell();
     }
