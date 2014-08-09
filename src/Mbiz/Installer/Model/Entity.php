@@ -30,7 +30,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-namespace Mbiz\Installer\Routers\Entity;
+namespace Mbiz\Installer\Model\Entity;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 
