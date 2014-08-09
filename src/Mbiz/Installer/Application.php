@@ -67,27 +67,8 @@ class Application extends BaseApplication
         $this->_runShell = (bool) $runShell;
 
         $this->add(new Hello\Hello);
-    }
 
-    /**
-     * Runs the current application.
-     *
-     * @param InputInterface  $input  An Input instance
-     * @param OutputInterface $output An Output instance
-     *
-     * @return int 0 if everything went fine, or an error code
-     *
-     * @throws \Exception When doRun returns Exception
-     *
-     * @api
-     */
-    public function run(InputInterface $input = null, OutputInterface $output = null)
-    {
-        if ($this->_runShell) {
-            $this->runShell();
-        } else {
-            parent::run($input, $output);
-        }
+        $this->runShell();
     }
 
     /**
@@ -95,8 +76,10 @@ class Application extends BaseApplication
      */
     public function runShell()
     {
-        $shell = new Shell($this);
-        $shell->run();
+        if ($this->_runShell) {
+            $shell = new Shell($this);
+            $shell->run();
+        }
     }
 
 }
