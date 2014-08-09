@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Installer version 2.
  *
@@ -29,9 +30,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-class Entity{
+namespace Mbiz\Installer\Routers\Entity;
 
-    public function execute(array $params)
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+
+class Entity
+{
+
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->_processResources(array());
 
@@ -82,7 +89,7 @@ class Entity{
         $construct = $this->getTemplate('entity_class_construct', array(
             '{Entity}' => $entity,
             '{entity}' => strtolower($entity),
-            '{resourceModel}' => strtolower($this->getModuleName() .  '/' . $entity)
+            '{resourceModel}' => strtolower($this->getModuleName() . '/' . $entity)
         ));
 
         foreach ($names as $name) {
@@ -113,7 +120,7 @@ class Entity{
         if (!$noFiles) {
             file_put_contents($dir . $filename, $this->getTemplate('mysql4_entity_class', array(
                 '{Name}' => $entity,
-                '{mainTable}' => strtolower($this->getModuleName() .  '/' . $entity),
+                '{mainTable}' => strtolower($this->getModuleName() . '/' . $entity),
                 '{idField}' => strtolower($lastName) . '_id'
             )));
         }
@@ -126,7 +133,7 @@ class Entity{
         if (!$noFiles) {
             file_put_contents($dir . 'Collection.php', $this->getTemplate('mysql4_collection_class', array(
                 '{Name}' => $entity,
-                '{model}' => strtolower($this->getModuleName() .  '/' . $entity)
+                '{model}' => strtolower($this->getModuleName() . '/' . $entity)
             )));
         }
 

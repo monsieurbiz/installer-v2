@@ -28,3 +28,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
+namespace Mbiz\Installer\Routers\Tmp;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+
+class Tmp extends BaseCommand
+{
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->_processModule(array(self::$_config->company_name_short, 'tmp', 'local'), true);
+        $this->_processRouter(array('front', 'tmp'));
+
+        if (empty($params)) {
+            $params = array('index');
+        }
+        array_unshift($params, 'index');
+        $this->_processController($params);
+    }
+}

@@ -28,3 +28,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+namespace Mbiz\Installer\Routers\Translate;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+
+class Translate extends BaseCommand
+{
+
+
+$this->_processTranslate(array('admin'));
+$this->_processTranslate(array('front'));
+
+}

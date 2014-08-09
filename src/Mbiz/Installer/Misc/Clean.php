@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Installer version 2.
  *
@@ -29,12 +30,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-class Clean{
+namespace Mbiz\Installer\Routers\Clean;
 
-    protected function _processClean(array $params)
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+
+class Clean
+{
+
+    protected function _process(array $params)
     {
-        $cache  = false;
-        $logs   = false;
+        $cache = false;
+        $logs = false;
 
         if (!count($params)) {
             $params = array('all');
