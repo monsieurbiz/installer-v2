@@ -34,7 +34,7 @@ namespace Mbiz\Installer\Router;
 use Mbiz\Installer\Command\Command as BaseCommand;
 
 
-class Routers extends BaseCommand
+class Router extends BaseCommand
 {
 
     public function execute(InputInterface $input, OutputInterface $output)
