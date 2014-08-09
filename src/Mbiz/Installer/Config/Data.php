@@ -90,9 +90,12 @@ class Data{
             }
         }
 
-        $this->_processReloadConfig();
-
         $_installationHelper = new InstallationHelper();
+        $_installationHelper->reloadConfig();
+
+
         $_installationHelper->setLast(__FUNCTION__);
+
+
     }
 }

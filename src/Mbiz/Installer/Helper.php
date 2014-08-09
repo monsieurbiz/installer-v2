@@ -244,10 +244,14 @@ class Helper {
         return $this->_mageConfig;
     }
 
+    public function reloadConfig() {
+        $this->_mageConfig = null;
+    }
+
     public function getConfigVersion()
     {
         $v = $this->getConfig()->modules->{$this->getModuleName()}->version;
-        $this->_processReloadConfig();
+        $this->reloadConfig();
         return $v;
     }
 
