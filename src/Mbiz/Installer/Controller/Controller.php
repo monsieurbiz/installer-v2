@@ -32,6 +32,7 @@
 namespace Mbiz\Installer\Controller\Controller;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Controller{
 
@@ -83,9 +84,11 @@ class Controller{
             $params = explode(' ', $this->prompt('Action?'));
         }
 
+        $_installationHelper = new InstallationHelper();
+
         // Vars & Methods
         $content = file_get_contents($filename);
-        $this->replaceVarsAndMethods($content, $params, 'action');
+        $_installationHelper->replaceVarsAndMethods($content, $params, 'action');
 
         // Other data
         if (isset($data['consts'])) {
@@ -103,6 +106,6 @@ class Controller{
 
         file_put_contents($filename, $content);
 
-        $this->setLast(__FUNCTION__, $officialName);
+        $_installationHelper->setLast(__FUNCTION__, $officialName);
     }
 }

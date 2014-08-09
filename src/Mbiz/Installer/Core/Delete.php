@@ -32,6 +32,7 @@
 namespace Mbiz\Installer\Core\Delete;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Delete{
 
@@ -41,12 +42,14 @@ class Delete{
             $response = strtolower($this->prompt('Are you sure you want to delete the module ' . red() . $this->getModuleName() . white() . '? (yes/no)'));
         } while (!in_array($response, array('yes', 'no')));
 
+        $_installationHelper = new InstallationHelper();
+
         if ($response === 'yes') {
-            $this->_rmdir($this->getModuleDir());
+            $_installationHelper->_rmdir($this->getModuleDir());
             @unlink($this->getAppDir() . 'etc/modules/' . $this->getModuleName() . '.xml');
-            $this->_rmdir($this->getDesignDir('frontend') . strtolower($this->getModuleName()));
-            $this->_rmdir($this->getDesignDir('adminhtml') . strtolower($this->getModuleName()));
-            foreach ($this->getLocales() as $locale) {
+            $_installationHelper->_rmdir($this->getDesignDir('frontend') . strtolower($this->getModuleName()));
+            $_installationHelper->_rmdir($this->getDesignDir('adminhtml') . strtolower($this->getModuleName()));
+            foreach ($_installationHelper->getLocales() as $locale) {
                 @unlink($this->getAppDir() . 'locale/' . $locale . '/' . $this->getModuleName() . '.csv');
             }
             $this->_namespace = null;

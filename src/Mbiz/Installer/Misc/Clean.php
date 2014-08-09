@@ -33,7 +33,7 @@
 namespace Mbiz\Installer\Misc\Clean;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Clean
 {
@@ -80,13 +80,14 @@ class Clean
                 echo green() . "[OK] Logs\n";
             }
             if ($cache) {
+                $_installationHelper = new InstallationHelper();
                 $cacheDir = $varDir . 'cache/';
                 if (is_dir($cacheDir)) {
-                    $this->_rmdir($cacheDir);
+                    $_installationHelper->_rmdir($cacheDir);
                 }
                 $fpcDir = $varDir . 'full_page_cache/';
                 if (is_dir($fpcDir)) {
-                    $this->_rmdir($fpcDir);
+                    $_installationHelper->_rmdir($fpcDir);
                 }
                 echo green() . "[OK] Cache\n";
             }

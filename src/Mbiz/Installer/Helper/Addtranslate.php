@@ -32,7 +32,7 @@ namespace Mbiz\Installer\Helper\Translate;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper\Translate as Translate;
-
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Addtranslate extends BaseCommand
 {
@@ -53,8 +53,9 @@ class Addtranslate extends BaseCommand
         } while (empty($translate));
 
         $translate = str_replace('"', '""', $translate);
+        $_installationHelper = new InstallationHelper();
 
-        foreach ($this->getLocales() as $locale) {
+        foreach ($_installationHelper->getLocales() as $locale) {
             $traduction = $this->prompt('Traduction for ' . red() . $locale . white() . '?');
             if (empty($traduction)) {
                 $traduction = $translate;

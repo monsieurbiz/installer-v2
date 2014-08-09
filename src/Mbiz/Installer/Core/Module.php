@@ -32,6 +32,7 @@
 namespace Mbiz\Installer\Core\Module;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Module{
 
@@ -83,6 +84,7 @@ class Module{
             echo red() . "Using: " . white() . $this->getModuleName() . ' in ' . $this->_pool . "\n";
         }
 
-        $this->setLast();
+        $_installationHelper = new InstallationHelper();
+        $_installationHelper->setLast();
     }
 }

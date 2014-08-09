@@ -32,6 +32,7 @@
 namespace Mbiz\Installer\Config\Depends;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Depends{
 
@@ -93,6 +94,7 @@ class Depends{
         file_put_contents($etcFilename, (string)$tidy);
         unset($dom);
 
-        $this->setLast(__FUNCTION__);
+        $_installationHelper = new InstallationHelper();
+        $_installationHelper->setLast(__FUNCTION__);
     }
 }

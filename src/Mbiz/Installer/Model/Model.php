@@ -32,12 +32,14 @@
 namespace Mbiz\Installer\Model\Model;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Model extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $_installationHelper = new InstallationHelper();
+
         if (empty($params)) {
             do {
                 $name = ucfirst($this->prompt('Class?'));
@@ -47,7 +49,7 @@ class Model extends BaseCommand
         }
         $officialName = $name;
 
-        list($dir, $created) = $this->_createModelDir();
+        list($dir, $created) = $_installationHelper->_createModelDir();
 
         $names = array_map('ucfirst', explode('_', $name));
         $name = array_pop($names);
@@ -90,6 +92,6 @@ class Model extends BaseCommand
 
         file_put_contents($filename, $content);
 
-        $this->setLast(__FUNCTION__, $officialName);
+        $_installationHelper->setLast(__FUNCTION__, $officialName);
     }
 }

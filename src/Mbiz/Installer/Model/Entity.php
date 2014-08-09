@@ -34,6 +34,7 @@ namespace Mbiz\Installer\Model\Entity;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Config\Resources as Resources;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Entity
 {
@@ -140,6 +141,7 @@ class Entity
 
         $this->_processReloadConfig();
 
-        $this->setLast(__FUNCTION__);
+        $_installationHelper = new InstallationHelper();
+        $_installationHelper->setLast(__FUNCTION__);
     }
 }

@@ -32,6 +32,7 @@ namespace Mbiz\Installer\Helper\Translate;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper\Helper as Helper;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Translate extends BaseCommand
 {
@@ -71,7 +72,7 @@ class Translate extends BaseCommand
                 ->addChild('default', $this->getModuleName() . '.csv');
             $this->writeConfig();
 
-            foreach ($this->getLocales() as $locale) {
+            foreach ($_installationHelper->getLocales() as $locale) {
                 $dir = $this->getAppDir() . 'locale/' . $locale . '/';
                 if (!is_dir($dir)) {
                     mkdir($dir);
@@ -82,6 +83,7 @@ class Translate extends BaseCommand
 
         $this->_processReloadConfig();
 
-        $this->setLast(__FUNCTION__);
+        $_installationHelper = new InstallationHelper();
+        $_installationHelper->setLast(__FUNCTION__);
     }
 }

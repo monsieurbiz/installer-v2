@@ -31,6 +31,7 @@
 namespace Mbiz\Installer\Helper\Helper;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Helper
 {
@@ -80,11 +81,12 @@ class Helper
             $params = explode(' ', $this->prompt('Methods?'));
         }
 
+        $_installationHelper = new InstallationHelper();
         $content = file_get_contents($filename);
-        $this->replaceVarsAndMethods($content, $params);
+        $_installationHelper->replaceVarsAndMethods($content, $params);
         file_put_contents($filename, $content);
 
-        $this->setLast(__FUNCTION__, $officialName);
+        $_installationHelper->setLast(__FUNCTION__, $officialName);
     }
 
 }

@@ -32,6 +32,7 @@
 namespace Mbiz\Installer\Config\Event;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Event{
 
@@ -118,6 +119,7 @@ class Event{
 
         $this->writeConfig();
 
-        $this->setLast(__FUNCTION__);
+        $_installationHelper = new InstallationHelper();
+        $_installationHelper->setLast(__FUNCTION__);
     }
 }

@@ -32,6 +32,7 @@
 namespace Mbiz\Installer\Config\Layout;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Layout{
 
@@ -98,6 +99,7 @@ class Layout{
 
         $this->_processReloadConfig();
 
-        $this->setLast(__FUNCTION__);
+        $_installationHelper = new InstallationHelper();
+        $_installationHelper->setLast(__FUNCTION__);
     }
 }

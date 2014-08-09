@@ -31,13 +31,14 @@
 namespace Mbiz\Installer\Config\Resources;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Resources extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        list($dir, $created) = $this->_createModelDir();
+        $_installationHelper = new InstallationHelper();
+        list($dir, $created) = $_installationHelper->_createModelDir();
 
         $config = $this->getConfig();
         $models = $config->global->models;
@@ -53,6 +54,7 @@ class Resources extends BaseCommand
 
         $this->_processReloadConfig();
 
-        $this->setLast(__FUNCTION__);
+
+        $_installationHelper->setLast(__FUNCTION__);
     }
 }

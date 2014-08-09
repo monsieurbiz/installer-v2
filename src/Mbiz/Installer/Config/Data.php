@@ -32,6 +32,7 @@
 namespace Mbiz\Installer\Config\Data;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Data{
 
@@ -91,6 +92,7 @@ class Data{
 
         $this->_processReloadConfig();
 
-        $this->setLast(__FUNCTION__);
+        $_installationHelper = new InstallationHelper();
+        $_installationHelper->setLast(__FUNCTION__);
     }
 }

@@ -34,6 +34,7 @@ namespace Mbiz\Installer\Block\Email;
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Config\Defaultconfig as Defaulconfig;
 use Mbiz\Installer\Model\Model as Model;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Email
 {
@@ -103,7 +104,8 @@ class Email
 
         // The file
         $appDir = $this->getAppDir();
-        foreach ($this->getLocales() as $locale) {
+        $_installationHelper = new InstallationHelper();
+        foreach ($_installationHelper->getLocales() as $locale) {
             $dir = $appDir . '/locale/' . $locale;
             if (!is_dir($dir)) {
                 mkdir($dir, 755);

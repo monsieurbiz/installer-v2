@@ -29,9 +29,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-namespace Mbiz\Installer\Block\Block;
+namespace Mbiz\Installer\Block;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Block{
 
@@ -111,10 +112,11 @@ class Block{
             array_unshift($params, 'TEMPLATE=' . $phtmlFilepath);
         }
 
-        $content = file_get_contents($filename);
-        $this->replaceVarsAndMethods($content, $params);
-        file_put_contents($filename, $content);
+        $_installationHelper = new InstallationHelper();
 
-        $this->setLast(__FUNCTION__, $officialName);
+        $content = file_get_contents($filename);
+        $_installationHelper->replaceVarsAndMethods($content, $params);
+        file_put_contents($filename, $content);
+        $_installationHelper->setLast(__FUNCTION__, $officialName);
     }
 }
