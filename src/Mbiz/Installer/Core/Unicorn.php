@@ -29,13 +29,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-namespace Mbiz\Installer\Core\Unicorn;
+namespace Mbiz\Installer\Core;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class Unicorn{
+class Unicorn extends BaseCommand
+{
 
-    function execute(){
-        die("Oh shit. Really? A Unicorn?");
+    /**
+     * Configure the Command
+     * @return \Mbiz\Installer\Core\Unicorn
+     */
+    public function configure()
+    {
+        return $this
+            ->setName('unicorn')
+            ->setDescription('Unicorn shit')
+        ;
     }
+
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeLn("<question>Oh shit. Really? A Unicorn?</question>");
+    }
+
 }

@@ -64,6 +64,7 @@ class Application extends BaseApplication
         $this->_runShell = (bool) $runShell;
 
         $this->add(new Hello\Hello);
+        $this->add(new Core\Unicorn);
 
         $this->runShell();
     }
