@@ -39,12 +39,19 @@ class Observer extends BaseCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+
         $command = $this->getApplication()->find('module');
         $command->run($input, $output);
 
-        $command = $this->getApplication()->find('model');
-        $command->run($input, $output);
 
+        $command = $this->getApplication()->find('model');
+        $arguments = array(
+            'command'   => 'helper',
+            'params'    => array('data', '-'),
+            'type'      => 'observer'
+        );
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
     }
 
 }

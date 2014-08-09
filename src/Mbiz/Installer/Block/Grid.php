@@ -122,16 +122,16 @@ class Grid extends BaseCommand {
 
         // Methods
         $methods = $_installerHelper->getTemplate('grid_controller_methods', array(
-            '{Entity}' => end($names),
-            '{entity}' => strtolower(end($names)),
-            '{name}' => strtolower(implode('_', $names)),
-            '{grid_name}' => strtolower(implode('_', $names) . '_Grid'),
+            '{Entity}'      => end($names),
+            '{entity}'      => strtolower(end($names)),
+            '{name}'        => strtolower(implode('_', $names)),
+            '{grid_name}'   => strtolower(implode('_', $names) . '_Grid'),
         ));
 
         // Grid controller..
         $command = $this->getApplication()->find('controller');
         $arguments = array(
-            'command' => 'controller',
+            'command'   => 'controller',
             'params'    => array('adminhtml_' . strtolower($this->_module) . '_' . strtolower($entity), '-'), compact('methods')
         );
 
@@ -141,7 +141,7 @@ class Grid extends BaseCommand {
         // Helper data
         $command = $this->getApplication()->find('helper');
         $arguments = array(
-            'command' => 'helper',
+            'command'   => 'helper',
             'params'    => array('data', '-')
         );
 

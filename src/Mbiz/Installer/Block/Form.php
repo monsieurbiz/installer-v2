@@ -124,9 +124,10 @@ class Form extends BaseCommand  {
         // Grid controller..
         $command = $this->getApplication()->find('controller');
         $arguments = array(
-            'command' => 'controller',
+            'command'   => 'controller',
             'params'    => array('adminhtml_' . strtolower($this->_module) .'_'. strtolower($entity)),
-            'data'  => compact('methods'),
+            'data'      => compact('methods'),
+            'type'      => 'action'
         );
 
         $input = new ArrayInput($arguments);
@@ -135,7 +136,7 @@ class Form extends BaseCommand  {
         // Helper data
         $command = $this->getApplication()->find('helper');
         $arguments = array(
-            'command' => 'helper',
+            'command'   => 'helper',
             'params'    => array('data', '-')
         );
 
@@ -145,7 +146,7 @@ class Form extends BaseCommand  {
         // Router
         $command = $this->getApplication()->find('router');
         $arguments = array(
-            'command' => 'router',
+            'command'   => 'router',
             'params'    => array('admin')
         );
 
