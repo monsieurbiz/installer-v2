@@ -30,7 +30,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-namespace Mbiz\Installer\Misc\Clean;
+namespace Mbiz\Installer\Misc;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper as InstallationHelper;

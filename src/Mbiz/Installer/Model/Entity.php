@@ -30,7 +30,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-namespace Mbiz\Installer\Model\Entity;
+namespace Mbiz\Installer\Model;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Config\Resources as Resources;

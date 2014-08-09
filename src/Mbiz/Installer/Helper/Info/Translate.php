@@ -29,22 +29,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-namespace Mbiz\Installer\Misc;
+namespace Mbiz\Installer\Config\Info;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Core\Module as Module;
-use Mbiz\Installer\Model\Model as Model;
 
+class Translate{
 
-class Session extends BaseCommand
-{
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $_module = new Module();
-        $_module->execute();
-        array_unshift($params, '_construct:this/p'); // method
-        array_unshift($params, 'session'); // class
-        $_model = new Model();
-        $_model->execute($params);
+
     }
 }

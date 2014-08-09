@@ -29,62 +29,108 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-namespace Mbiz\Installer\Core\Module;
+namespace Mbiz\Installer\Core;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper as InstallationHelper;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Mbiz\Installer\Shell;
 
-class Module{
+class Module extends BaseCommand
+{
 
-    protected function execute(array $params = array(), $force = false)
+    /**
+     * Configure the Command
+     * @return \Mbiz\Installer\Core\Module
+     */
+    public function configure()
     {
-        if ($force || !$this->_namespace) {
-            // Namespace
-            if (isset($params[0])) {
-                $this->_namespace = ucfirst($params[0]);
-            } else {
-                $this->_namespace = ucfirst($this->prompt("Namespace? (enter for " . self::$_config->company_name_short . ")"));
-                if (empty($this->_namespace)) {
-                    $this->_namespace = self::$_config->company_name_short;
+        return $this
+            ->setName('module')
+            ->setDescription('Open a module shell.')
+            ->addArgument(
+                'vendor',
+                InputArgument::OPTIONAL,
+                'Vendor name'
+            )
+            ->addArgument(
+                'module',
+                InputArgument::OPTIONAL,
+                'Module name'
+            )
+            ->addArgument(
+                'pool',
+                InputArgument::OPTIONAL,
+                'Pool (community or local)'
+            )
+        ;
+    }
+
+    /**
+     * Execute the command
+     * @param \Symfony\Component\Console\Input\InputInterface $input The input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output The output
+     */
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        // Vendor name
+        $vendor = $input->getArgument('vendor');
+        if (!$vendor) {
+            $vendor = $this->getDialog()->askAndValidate(
+                $output,
+                'Please enter the module\'s vendor name:',
+                function ($answer) {
+                    if (!$answer) {
+                        throw new \RunTimeException(
+                            "You need to specify a vendor name."
+                        );
+                    }
+                    return $answer;
                 }
-            }
-            // Module
-            if (isset($params[1])) {
-                $this->_module = ucfirst($params[1]);
-            } else {
-                do {
-                    $this->_module = ucfirst($this->prompt("Module?"));
-                } while (empty($this->_module));
-            }
-            // Pool
-            if (isset($params[2]) && in_array($params[2], array('local', 'community'))) {
-                $this->_pool = $params[2];
-            } else {
-                $this->_pool = strtolower($this->prompt("Pool? (enter for local)"));
-                if (empty($this->_pool)) {
-                    $this->_pool = 'local';
+            );
+        }
+
+        // Module name
+        $module = $input->getArgument('module');
+        if (!$module) {
+            $module = $this->getDialog()->askAndValidate(
+                $output,
+                'Please enter the module\'s name:',
+                function ($answer) {
+                    if (!$answer) {
+                        throw new \RunTimeException(
+                            "You need to specify a name."
+                        );
+                    }
+                    return $answer;
                 }
-            }
+            );
+        }
 
-            $filename = $this->getModuleDir('etc') . 'config.xml';
-            if (!is_file($filename)) {
-                file_put_contents($filename, $this->getTemplate('config_xml'));
-                file_put_contents($filename, $this->getTemplate('config_xml'));
-                file_put_contents(
-                    $this->getAppDir() . 'etc/modules/' . $this->getModuleName() . '.xml',
-                    $this->getTemplate(
-                        'module_xml',
-                        array('{pool}' => $this->_pool)
-                    )
-                );
-            }
-
-            $this->_mageConfig = null;
-
-            echo red() . "Using: " . white() . $this->getModuleName() . ' in ' . $this->_pool . "\n";
+        // Pool
+        $pool = $input->getArgument('pool');
+        if (!$pool) {
+            $pool = $this->getDialog()->askAndValidate(
+                $output,
+                'Please enter the module\'s pool:',
+                function ($answer) {
+                    if (!$answer) {
+                        throw new \RunTimeException(
+                            "You need to specify a pool."
+                        );
+                    }
+                    return $answer;
+                }
+            );
         }
 
         $_installationHelper = new InstallationHelper();
         $_installationHelper->setLast();
+
+        // Start a new shell
+        $this->getApplication()->setShellPrompt(sprintf('%s_%s in %s', $vendor, $module, $pool));
     }
+
 }

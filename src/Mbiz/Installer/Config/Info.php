@@ -29,9 +29,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-namespace Mbiz\Installer\Config\Info;
+namespace Mbiz\Installer\Config;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Config\Info\Event as InfoEvent;
+use Mbiz\Installer\Rouer\Info\Router as InfoRouter;
+use Mbiz\Installer\Rouer\Info\Router as InfoLayout;
+use Mbiz\Installer\Rouer\Info\Router as InfoTranslate;
 
 class Info{
 
@@ -134,7 +138,8 @@ class Info{
 
         // Events
         if ($config->global && $config->global->events) {
-            $this->_processInfoEvents($config->global->events);
+            $infoEvent = new InfoEvent();
+            $infoEvent->execute($config->global->events);
         }
 
         // Resources
@@ -171,20 +176,23 @@ class Info{
         echo $r . "Frontend Configuration\n";
         echo $r . str_repeat('-', $width) . "\n";
 
+        $infoRouter = new InfoRouter();
+        $infoLayout = new InfoLayout();
+        $infoTranslate = new InfoTranslate();
 
         // Routers
         if ($config->frontend && $config->frontend->routers) {
-            $this->_processInfoRouters($config->frontend->routers);
+            $infoRouter->_processInfoRouters($config->frontend->routers);
         }
 
         // Layout
         if ($config->frontend && $config->frontend->layout) {
-            $this->_processInfoLayout($config->frontend->layout);
+            $infoLayout->_processInfoLayout($config->frontend->layout);
         }
 
         // Translate
         if ($config->frontend && $config->frontend->translate) {
-            $this->_processInfoTranslate($config->frontend->translate);
+            $infoTranslate->execute($config->frontend->translate);
         }
 
 
@@ -195,17 +203,17 @@ class Info{
 
         // Routers
         if ($config->admin && $config->admin->routers) {
-            $this->_processInfoRouters($config->admin->routers);
+            $infoRouter->execute($config->admin->routers);
         }
 
         // Layout
         if ($config->admin && $config->adminhtml->layout) {
-            $this->_processInfoLayout($config->adminhtml->layout);
+            $infoLayout->execute($config->adminhtml->layout);
         }
 
         // Translate
         if ($config->admin && $config->adminhtml->translate) {
-            $this->_processInfoTranslate($config->adminhtml->translate);
+            $infoTranslate->execute($config->adminhtml->translate);
         }
 
 

@@ -55,6 +55,12 @@ class Application extends BaseApplication
     protected $_runShell = true;
 
     /**
+     * The shell
+     * @var \Mbiz\Installer\Shell
+     */
+    protected $_shell;
+
+    /**
      * Construct the Application
      */
     public function __construct($runShell = true)
@@ -64,6 +70,9 @@ class Application extends BaseApplication
         $this->_runShell = (bool) $runShell;
 
         $this->add(new Hello\Hello);
+        $this->add(new Core\Unicorn);
+        $this->add(new Core\Module);
+        $this->add(new Misc\Doc);
 
         $this->runShell();
     }
@@ -74,9 +83,24 @@ class Application extends BaseApplication
     public function runShell()
     {
         if ($this->_runShell) {
-            $shell = new Shell($this);
-            $shell->run();
+            if (!$this->_shell) {
+                $this->_shell = new Shell($this);
+            }
+            $this->_shell->run();
         }
+    }
+
+    /**
+     * Set the shell prompt
+     * @param string $prompt
+     * @return \Mbiz\Installer\Application
+     */
+    public function setShellPrompt($prompt)
+    {
+        if ($this->_shell !== null) {
+            $this->_shell->setPrompt($prompt);
+        }
+        return $this;
     }
 
 }
