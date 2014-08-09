@@ -282,6 +282,6 @@ class Info extends BaseCommand {
             }
         }
 
-        $this->_processReloadConfig();
+        $_installerHelper->_processReloadConfig();
     }
 }

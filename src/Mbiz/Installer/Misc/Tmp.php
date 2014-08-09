@@ -38,6 +38,9 @@ class Tmp extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $params = $input->getParams();
+
         $command = $this->getApplication()->find('module');
         $arguments = array(
             'command' => 'module',

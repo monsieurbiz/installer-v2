@@ -38,6 +38,10 @@ class Depends extends BaseCommand {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $_installerHelper = new InstallerHelper();
+
+        $params = $input->getParams();
         if (empty($params)) {
             do {
                 $params = $_installerHelper->prompt('Modules?');
@@ -45,7 +49,6 @@ class Depends extends BaseCommand {
             $params = explode(' ', $params);
         }
 
-        $_installerHelper = new InstallerHelper();
         $config = $_installerHelper->getConfig();
         $etc = simplexml_load_file($etcFilename = $_installerHelper->getAppDir() . 'etc/modules/' . $_installerHelper->getModuleName() . '.xml');
 

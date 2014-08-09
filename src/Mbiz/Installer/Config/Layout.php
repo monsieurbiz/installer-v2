@@ -38,6 +38,10 @@ class Layout extends BaseCommand {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $_installerHelper = new InstallerHelper();
+
+        $params = $input->getParams();
         if (!empty($params) && in_array($params[0], array('admin', 'front'))) {
             $where = $params[0];
         } else {
@@ -55,7 +59,6 @@ class Layout extends BaseCommand {
             $where = 'frontend';
         }
 
-        $_installerHelper = new InstallerHelper();
         $config = $_installerHelper->getConfig();
 
         if (!isset($config->{$where})) {
@@ -98,7 +101,7 @@ class Layout extends BaseCommand {
             }
         }
 
-        $this->_processReloadConfig();
+        $_installerHelper->_processReloadConfig();
 
         $_installerHelper->setLast(__FUNCTION__);
     }

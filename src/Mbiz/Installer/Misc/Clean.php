@@ -42,7 +42,7 @@ class Clean
     {
         $cache = false;
         $logs = false;
-
+        $params = $input->getParams();
         if (!count($params)) {
             $params = array('all');
         }

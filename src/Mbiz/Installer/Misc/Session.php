@@ -38,6 +38,8 @@ class Session extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $params = $input->getParams();
+
         $command = $this->getApplication()->find('module');
         $command->run($input, $output);
 

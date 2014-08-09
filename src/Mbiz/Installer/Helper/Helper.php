@@ -37,6 +37,9 @@ class Helper
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $_installerHelper = new InstallerHelper();
+
+        $params = $input->getParams();
         if (empty($params)) {
             $name = ucfirst($_installerHelper->prompt('Class? (enter for Data)'));
             if (empty($name)) {
@@ -49,7 +52,7 @@ class Helper
 
         // Create file
         list($dir, $created) = $_installerHelper->getModuleDir('Helper', true);
-        $_installerHelper = new InstallerHelper();
+
         if ($created) {
             $config = $_installerHelper->getConfig();
             if (!isset($config->global)) {

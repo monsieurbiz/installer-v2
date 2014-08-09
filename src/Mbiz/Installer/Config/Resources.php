@@ -52,7 +52,7 @@ class Resources extends BaseCommand {
             @mkdir($dir = $dir . 'Resource/');
         }
 
-        $this->_processReloadConfig();
+        $_installerHelper->_processReloadConfig();
 
 
         $_installerHelper->setLast(__FUNCTION__);

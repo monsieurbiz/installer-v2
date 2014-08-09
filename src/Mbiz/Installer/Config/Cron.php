@@ -38,6 +38,10 @@ class Cron extends BaseCommand {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $_installerHelper = new InstallerHelper();
+
+        $params = $input->getParams();
         // Ask parts of cron ;)
         // Cron name
         if (empty($params)) {
@@ -121,7 +125,6 @@ class Cron extends BaseCommand {
 
 
         // Now the Config
-        $_installerHelper = new InstallerHelper();
         $config = $_installerHelper->getConfig();
         if (!isset($config->crontab)) {
             $config->addChild('crontab');
