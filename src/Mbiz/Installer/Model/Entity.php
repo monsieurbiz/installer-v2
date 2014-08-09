@@ -34,7 +34,7 @@ namespace Mbiz\Installer\Model;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Config\Resources as Resources;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Entity
 {
@@ -46,7 +46,7 @@ class Entity
 
         if (empty($params)) {
             do {
-                $name = ucfirst($_installationHelper->prompt('Entity?'));
+                $name = ucfirst($_installerHelper->prompt('Entity?'));
             } while (empty($name));
         } else {
             $name = ucfirst(array_shift($params));
@@ -54,7 +54,7 @@ class Entity
 
         if (empty($params)) {
             do {
-                $table = $_installationHelper->prompt('Table?');
+                $table = $_installerHelper->prompt('Table?');
             } while (empty($table));
         } else {
             $table = array_shift($params);
@@ -65,9 +65,9 @@ class Entity
             $noFiles = (array_shift($params) == '-');
         }
 
-        $_installationHelper = new InstallationHelper();
+        $_installerHelper = new InstallerHelper();
 
-        $config = $_installationHelper->getConfig();
+        $config = $_installerHelper->getConfig();
         if (!isset($config->global)) {
             $config->addChild('global');
         }
@@ -81,19 +81,19 @@ class Entity
 
         if ($entities->{strtolower($name)}) {
             echo red() . "Entity $entity already exist.\n" . white();
-            $_installationHelper->_processReloadConfig();
+            $_installerHelper->_processReloadConfig();
             return;
         }
 
         $entities->addChild(strtolower($name))->addChild('table', $table);
-        $_installationHelper->writeConfig();
+        $_installerHelper->writeConfig();
 
-        $dir = $_installationHelper->getModuleDir('Model');
+        $dir = $_installerHelper->getModuleDir('Model');
 
-        $construct = $_installationHelper->getTemplate('entity_class_construct', array(
+        $construct = $_installerHelper->getTemplate('entity_class_construct', array(
             '{Entity}' => $entity,
             '{entity}' => strtolower($entity),
-            '{resourceModel}' => strtolower($_installationHelper->getModuleName() . '/' . $entity)
+            '{resourceModel}' => strtolower($_installerHelper->getModuleName() . '/' . $entity)
         ));
 
         foreach ($names as $name) {
@@ -105,13 +105,13 @@ class Entity
         }
 
         if (!$noFiles) {
-            file_put_contents($dir . $filename, $_installationHelper->getTemplate('model_class', array(
+            file_put_contents($dir . $filename, $_installerHelper->getTemplate('model_class', array(
                 '{Name}' => $entity,
-                $_installationHelper->getTag('new_method') => $construct . "\n\n" . $_installationHelper->getTag('new_method')
+                $_installerHelper->getTag('new_method') => $construct . "\n\n" . $_installerHelper->getTag('new_method')
             )));
         }
 
-        $dir = $_installationHelper->getModuleDir('Model') . 'Resource/';
+        $dir = $_installerHelper->getModuleDir('Model') . 'Resource/';
 
         foreach ($names as $name) {
             if (!is_dir($dir = $dir . $name . '/')) {
@@ -122,9 +122,9 @@ class Entity
         }
 
         if (!$noFiles) {
-            file_put_contents($dir . $filename, $_installationHelper->getTemplate('mysql4_entity_class', array(
+            file_put_contents($dir . $filename, $_installerHelper->getTemplate('mysql4_entity_class', array(
                 '{Name}' => $entity,
-                '{mainTable}' => strtolower($_installationHelper->getModuleName() . '/' . $entity),
+                '{mainTable}' => strtolower($_installerHelper->getModuleName() . '/' . $entity),
                 '{idField}' => strtolower($lastName) . '_id'
             )));
         }
@@ -135,14 +135,14 @@ class Entity
             }
         }
         if (!$noFiles) {
-            file_put_contents($dir . 'Collection.php', $_installationHelper->getTemplate('mysql4_collection_class', array(
+            file_put_contents($dir . 'Collection.php', $_installerHelper->getTemplate('mysql4_collection_class', array(
                 '{Name}' => $entity,
-                '{model}' => strtolower($_installationHelper->getModuleName() . '/' . $entity)
+                '{model}' => strtolower($_installerHelper->getModuleName() . '/' . $entity)
             )));
         }
 
         $this->_processReloadConfig();
 
-        $_installationHelper->setLast(__FUNCTION__);
+        $_installerHelper->setLast(__FUNCTION__);
     }
 }

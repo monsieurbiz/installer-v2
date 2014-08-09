@@ -32,7 +32,7 @@
 namespace Mbiz\Installer\Core;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -126,8 +126,8 @@ class Module extends BaseCommand
             );
         }
 
-        $_installationHelper = new InstallationHelper();
-        $_installationHelper->setLast();
+        $_installerHelper = new InstallerHelper();
+        $_installerHelper->setLast();
 
         // Start a new shell
         $this->getApplication()->setShellPrompt(sprintf('%s_%s in %s', $vendor, $module, $pool));

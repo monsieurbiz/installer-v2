@@ -65,7 +65,7 @@ class Doc extends BaseCommand
 
         if (!is_file($filename = $dir . '/README.md')) {
             $output->writeLn($this->render('doc.twig', ['name' => $name]));
-            file_put_contents($filename, $_installationHelper->getTemplate('doc_readme', array(
+            file_put_contents($filename, $_installerHelper->getTemplate('doc_readme', array(
                'title' => $title
             )));
         }

@@ -34,7 +34,7 @@ namespace Mbiz\Installer\Block;
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Config\Defaultconfig as Defaulconfig;
 use Mbiz\Installer\Model\Model as Model;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Email
 {
@@ -47,14 +47,14 @@ class Email
         // Get email name
         if (empty($params)) {
             do {
-                $name = $_installationHelper->prompt('Email identifier?');
+                $name = $_installerHelper->prompt('Email identifier?');
             } while (empty($name));
         }
         $name = strtolower($name);
 
-        $_installationHelper = new InstallationHelper();
+        $_installerHelper = new InstallerHelper();
         // Configuration
-        $config = $_installationHelper->getConfig();
+        $config = $_installerHelper->getConfig();
 
         // Create templte node if not exists
         if (!isset($config->global)) {
@@ -73,10 +73,10 @@ class Email
         $email = $template->email;
 
         // Create email node
-        $moduleName = strtolower($_installationHelper->getModuleName());
+        $moduleName = strtolower($_installerHelper->getModuleName());
         $node = $email->addChild($moduleName . '_email_' . $name);
         $node->addAttribute('translate', 'label');
-        $node->addAttribute('module', strtolower($_installationHelper->getModuleName()));
+        $node->addAttribute('module', strtolower($_installerHelper->getModuleName()));
 
         $ext = '.html';
         $node->addChild('label', 'Your email template name');
@@ -88,7 +88,7 @@ class Email
         $_defaultConfig->execute(array($moduleName . '/email/' . $name, $moduleName . '_email_' . $name));
 
         // Save configuration
-        $_installationHelper->writeconfig();
+        $_installerHelper->writeconfig();
 
         // Model
         $_model = new Model();
@@ -96,16 +96,16 @@ class Email
             'email',
             'CONFIG_KEY_EMAIL_' . strtoupper($name) . "=$moduleName/email/$name"
         ), 'model', array(
-            'methods' => $_installationHelper->getTemplate('email_method', array(
+            'methods' => $_installerHelper->getTemplate('email_method', array(
                 '{NAME}' => strtoupper($name),
-                '{methodName}' => lcfirst($_installationHelper->_camelize('send_' . $name)),
+                '{methodName}' => lcfirst($_installerHelper->_camelize('send_' . $name)),
                 '{name}' => $name
             ))
         ));
 
         // The file
-        $appDir = $_installationHelper->getAppDir();
-        foreach ($_installationHelper->getLocales() as $locale) {
+        $appDir = $_installerHelper->getAppDir();
+        foreach ($_installerHelper->getLocales() as $locale) {
             $dir = $appDir . '/locale/' . $locale;
             if (!is_dir($dir)) {
                 mkdir($dir, 755);
@@ -124,7 +124,7 @@ class Email
             }
             $filename = $finalDir . '/' . $name . $ext;
             if (!is_file($filename)) {
-                file_put_contents($filename, $_installationHelper->getTemplate('email_template'));
+                file_put_contents($filename, $_installerHelper->getTemplate('email_template'));
             }
         }
     }

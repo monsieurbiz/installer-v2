@@ -31,30 +31,30 @@
 namespace Mbiz\Installer\Config;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Resources extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $_installationHelper = new InstallationHelper();
-        list($dir, $created) = $_installationHelper->_createModelDir();
+        $_installerHelper = new InstallerHelper();
+        list($dir, $created) = $_installerHelper->_createModelDir();
 
-        $config = $_installationHelper->getConfig();
+        $config = $_installerHelper->getConfig();
         $models = $config->global->models;
 
-        if (!$models->{strtolower($_installationHelper->getModuleName())}->resourceModel) {
-            $models->{strtolower($_installationHelper->getModuleName())}->addChild('resourceModel', strtolower($_installationHelper->getModuleName()) . '_resource');
-            $resource = $models->addChild(strtolower($_installationHelper->getModuleName()) . '_resource');
-            $resource->addChild('class', $_installationHelper->getModuleName() . '_Model_Resource');
+        if (!$models->{strtolower($_installerHelper->getModuleName())}->resourceModel) {
+            $models->{strtolower($_installerHelper->getModuleName())}->addChild('resourceModel', strtolower($_installerHelper->getModuleName()) . '_resource');
+            $resource = $models->addChild(strtolower($_installerHelper->getModuleName()) . '_resource');
+            $resource->addChild('class', $_installerHelper->getModuleName() . '_Model_Resource');
             $resource->addChild('entities');
-            $_installationHelper->writeConfig();
+            $_installerHelper->writeConfig();
             @mkdir($dir = $dir . 'Resource/');
         }
 
         $this->_processReloadConfig();
 
 
-        $_installationHelper->setLast(__FUNCTION__);
+        $_installerHelper->setLast(__FUNCTION__);
     }
 }

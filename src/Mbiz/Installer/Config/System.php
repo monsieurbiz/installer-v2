@@ -33,7 +33,7 @@ namespace Mbiz\Installer\Config;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper\Helper as Helper;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class System{
 
@@ -42,13 +42,13 @@ class System{
         $_helper = new Helper();
         $_helper->execute(array('data', '-'));
 
-        $_installationHelper = new InstallationHelper();
+        $_installerHelper = new InstallerHelper();
 
-        $dir = $_installationHelper->getModuleDir('etc');
+        $dir = $_installerHelper->getModuleDir('etc');
 
         if (!is_file($filename = $dir . '/system.xml')) {
-            file_put_contents($filename, $_installationHelper->getTemplate('system_xml', array(
-                '{module}' => strtolower($_installationHelper->getModuleName())
+            file_put_contents($filename, $_installerHelper->getTemplate('system_xml', array(
+                '{module}' => strtolower($_installerHelper->getModuleName())
             )));
         }
     }

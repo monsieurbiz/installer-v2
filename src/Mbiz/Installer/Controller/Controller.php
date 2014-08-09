@@ -32,18 +32,18 @@
 namespace Mbiz\Installer\Controller;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Controller{
 
     public function execute(array $params, array $data = array())
     {
 
-        $_installationHelper = new InstallationHelper();
+        $_installerHelper = new InstallerHelper();
 
         if (empty($params)) {
             do {
-                $name = ucfirst($_installationHelper->prompt('Name? (enter for index)'));
+                $name = ucfirst($_installerHelper->prompt('Name? (enter for index)'));
                 if (empty($name)) {
                     $name = 'Index';
                 }
@@ -58,7 +58,7 @@ class Controller{
         $names = array_map('ucfirst', explode('_', $name));
         $name = array_pop($names);
 
-        $dir = $_installationHelper->getModuleDir('controllers');
+        $dir = $_installerHelper->getModuleDir('controllers');
         foreach ($names as $rep) {
             $dir .= $rep . '/';
             if (!is_dir($dir)) {
@@ -68,15 +68,15 @@ class Controller{
 
         $filename = $dir . $name . 'Controller.php';
         if (!is_file($filename)) {
-            $content = $_installationHelper->getTemplate('controller_class', array(
+            $content = $_installerHelper->getTemplate('controller_class', array(
                 '{Name}' => implode('_', $names) . (empty($names) ? '' : '_') . $name,
                 'Mage_Core_Controller_Front_Action' => $isAdminhtml ? 'Mage_Adminhtml_Controller_Action' : 'Mage_Core_Controller_Front_Action'
             ));
 
             // Is allowed method
             if ($isAdminhtml) {
-                $tag = $_installationHelper->getTag('new_method');
-                $method = $_installationHelper->getTemplate('is_allowed_method');
+                $tag = $_installerHelper->getTag('new_method');
+                $method = $_installerHelper->getTemplate('is_allowed_method');
                 $content = str_replace($tag, "$tag\n" . $method, $content);
             }
 
@@ -84,29 +84,29 @@ class Controller{
         }
 
         if (empty($params)) {
-            $params = explode(' ', $_installationHelper->prompt('Action?'));
+            $params = explode(' ', $_installerHelper->prompt('Action?'));
         }
 
         // Vars & Methods
         $content = file_get_contents($filename);
-        $_installationHelper->replaceVarsAndMethods($content, $params, 'action');
+        $_installerHelper->replaceVarsAndMethods($content, $params, 'action');
 
         // Other data
         if (isset($data['consts'])) {
-            $tag = $_installationHelper->getTag('new_const');
+            $tag = $_installerHelper->getTag('new_const');
             $content = str_replace($tag, $data['consts'] . "\n$tag", $content);
         }
         if (isset($data['vars'])) {
-            $tag = $_installationHelper->getTag('new_var');
+            $tag = $_installerHelper->getTag('new_var');
             $content = str_replace($tag, $data['vars'] . "\n$tag", $content);
         }
         if (isset($data['methods'])) {
-            $tag = $_installationHelper->getTag('new_method');
+            $tag = $_installerHelper->getTag('new_method');
             $content = str_replace($tag, $data['methods'] . "\n$tag", $content);
         }
 
         file_put_contents($filename, $content);
 
-        $_installationHelper->setLast(__FUNCTION__, $officialName);
+        $_installerHelper->setLast(__FUNCTION__, $officialName);
     }
 }

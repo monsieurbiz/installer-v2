@@ -37,18 +37,18 @@ use Mbiz\Installer\Config\Resources as Resources;
 use Mbiz\Installer\Model\Entity as Entity;
 use Mbiz\Installer\Controller\Controller as Controller;
 use Mbiz\Installer\Router\Router as Router;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Grid{
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $_installationHelper = new InstallationHelper();
+        $_installerHelper = new InstallerHelper();
 
         // Check entity
         if (empty($params)) {
             do {
-                $entity = $_installationHelper->prompt('Which entity?');
+                $entity = $_installerHelper->prompt('Which entity?');
             } while (empty($entity));
         } else {
             $entity = array_shift($params);
@@ -58,11 +58,11 @@ class Grid{
         $command = $this->getApplication()->find('resources');
         $command->run($input, $output);
 
-        $config = $_installationHelper->getConfig();
+        $config = $_installerHelper->getConfig();
         if (!isset($config->global)) {
             $config->addChild('global');
         }
-        $resourceModel = $config->global->models->{strtolower($_installationHelper->getModuleName())}->resourceModel;
+        $resourceModel = $config->global->models->{strtolower($_installerHelper->getModuleName())}->resourceModel;
         $entities = $config->global->models->{$resourceModel}->entities;
         if (!$entities->{strtolower($entity)}) {
             $command = $this->getApplication()->find('entity');
@@ -81,15 +81,15 @@ class Grid{
         $names = $entityTab = array_map('ucfirst', explode('_', $entity));
         array_unshift($names, 'Adminhtml');
 
-        list($dir, $created) = $_installationHelper->getModuleDir('Block', true);
+        list($dir, $created) = $_installerHelper->getModuleDir('Block', true);
 
         if ($created) {
-            $config = $_installationHelper->getConfig();
+            $config = $_installerHelper->getConfig();
             $global = $config->global;
             if (!isset($global['blocks'])) {
-                $global->addChild('blocks')->addChild(strtolower($_installationHelper->getModuleName()))->addChild('class', $_installationHelper->getModuleName() . '_Block');
+                $global->addChild('blocks')->addChild(strtolower($_installerHelper->getModuleName()))->addChild('class', $_installerHelper->getModuleName() . '_Block');
             }
-            $_installationHelper->writeConfig();
+            $_installerHelper->writeConfig();
         }
 
         foreach ($names as $rep) {
@@ -103,10 +103,10 @@ class Grid{
         $filename = $dir . '../' . end($names) . '.php';
 
         if (!is_file($filename)) {
-            file_put_contents($filename, $_installationHelper->getTemplate('grid_container_block', array(
+            file_put_contents($filename, $_installerHelper->getTemplate('grid_container_block', array(
                 '{Entity}' => end($names),
                 '{Name}' => implode('_', $names),
-                '{blockGroup}' => strtolower($_installationHelper->getModuleName()),
+                '{blockGroup}' => strtolower($_installerHelper->getModuleName()),
                 '{controller}' => 'adminhtml_' . strtolower($entity)
             )));
         }
@@ -115,16 +115,16 @@ class Grid{
         $filename = $dir . '/Grid.php';
 
         if (!is_file($filename)) {
-            file_put_contents($filename, $_installationHelper->getTemplate('grid_block', array(
+            file_put_contents($filename, $_installerHelper->getTemplate('grid_block', array(
                 '{Entity}' => end($names),
                 '{Name}' => implode('_', $names) . '_Grid',
-                '{resource_model_collection}' => strtolower($_installationHelper->getModuleName()) . '/' . strtolower($entity) . '_collection',
-                '{Collection_Model}' => $_installationHelper->getModuleName() . '_Model_Resource_' . implode('_', $entityTab) . '_Collection'
+                '{resource_model_collection}' => strtolower($_installerHelper->getModuleName()) . '/' . strtolower($entity) . '_collection',
+                '{Collection_Model}' => $_installerHelper->getModuleName() . '_Model_Resource_' . implode('_', $entityTab) . '_Collection'
             )));
         }
 
         // Methods
-        $methods = $_installationHelper->getTemplate('grid_controller_methods', array(
+        $methods = $_installerHelper->getTemplate('grid_controller_methods', array(
             '{Entity}' => end($names),
             '{entity}' => strtolower(end($names)),
             '{name}' => strtolower(implode('_', $names)),

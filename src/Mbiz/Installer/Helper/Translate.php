@@ -32,7 +32,7 @@ namespace Mbiz\Installer\Helper;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper\Helper as Helper;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Translate extends BaseCommand
 {
@@ -42,7 +42,7 @@ class Translate extends BaseCommand
             $where = $params[0];
         } else {
             do {
-                $where = $_installationHelper->prompt('Where? (enter for front)');
+                $where = $_installerHelper->prompt('Where? (enter for front)');
                 if (empty($where)) {
                     $where = 'front';
                 }
@@ -55,8 +55,8 @@ class Translate extends BaseCommand
             $where = 'frontend';
         }
 
-        $_installationHelper = new InstallationHelper();
-        $config = $_installationHelper->getConfig();
+        $_installerHelper = new InstallerHelper();
+        $config = $_installerHelper->getConfig();
 
         if (!isset($config->{$where})) {
             $config->addChild($where);
@@ -68,22 +68,22 @@ class Translate extends BaseCommand
             $config->{$where}
                 ->addChild('translate')
                 ->addChild('modules')
-                ->addChild($_installationHelper->getModuleName())
+                ->addChild($_installerHelper->getModuleName())
                 ->addChild('files')
-                ->addChild('default', $_installationHelper->getModuleName() . '.csv');
-            $_installationHelper->writeConfig();
+                ->addChild('default', $_installerHelper->getModuleName() . '.csv');
+            $_installerHelper->writeConfig();
 
-            foreach ($_installationHelper->getLocales() as $locale) {
-                $dir = $_installationHelper->getAppDir() . 'locale/' . $locale . '/';
+            foreach ($_installerHelper->getLocales() as $locale) {
+                $dir = $_installerHelper->getAppDir() . 'locale/' . $locale . '/';
                 if (!is_dir($dir)) {
                     mkdir($dir);
                 }
-                touch($dir . $_installationHelper->getModuleName() . '.csv');
+                touch($dir . $_installerHelper->getModuleName() . '.csv');
             }
         }
 
         $this->_processReloadConfig();
 
-        $_installationHelper->setLast(__FUNCTION__);
+        $_installerHelper->setLast(__FUNCTION__);
     }
 }

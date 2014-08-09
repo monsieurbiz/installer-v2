@@ -32,15 +32,15 @@
 namespace Mbiz\Installer\Config;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class General{
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
         // If no config file
-        $_installationHelper = new InstallationHelper();
-        if (false === $local = $_installationHelper->_getLocalXml()) {
+        $_installerHelper = new InstallerHelper();
+        if (false === $local = $_installerHelper->_getLocalXml()) {
             return;
         }
 

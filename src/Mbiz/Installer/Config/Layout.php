@@ -32,7 +32,7 @@
 namespace Mbiz\Installer\Config;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Layout{
 
@@ -42,7 +42,7 @@ class Layout{
             $where = $params[0];
         } else {
             do {
-                $where = $_installationHelper->prompt('Where? (enter for front)');
+                $where = $_installerHelper->prompt('Where? (enter for front)');
                 if (empty($where)) {
                     $where = 'front';
                 }
@@ -55,23 +55,23 @@ class Layout{
             $where = 'frontend';
         }
 
-        $_installationHelper = new InstallationHelper();
-        $config = $_installationHelper->getConfig();
+        $_installerHelper = new InstallerHelper();
+        $config = $_installerHelper->getConfig();
 
         if (!isset($config->{$where})) {
             $config->addChild($where);
         }
 
         if (!isset($config->{$where}->layout)) {
-            $file = strtolower($_installationHelper->getModuleName()) . '.xml';
+            $file = strtolower($_installerHelper->getModuleName()) . '.xml';
             $child = $config->{$where}
                 ->addChild('layout')
                 ->addChild('updates')
-                ->addChild(strtolower($_installationHelper->getModuleName()));
-            $child->addAttribute('module', $_installationHelper->getModuleName());
+                ->addChild(strtolower($_installerHelper->getModuleName()));
+            $child->addAttribute('module', $_installerHelper->getModuleName());
             $child->addChild('file', $file);
-            $_installationHelper->writeConfig();
-            $dir = $_installationHelper->getAppDir() . 'design/' . $where . '/';
+            $_installerHelper->writeConfig();
+            $dir = $_installerHelper->getAppDir() . 'design/' . $where . '/';
 
             if ($this->_pool == 'community') {
                 $dirs = array('base', 'default');
@@ -94,12 +94,12 @@ class Layout{
             }
 
             if (!file_exists($dir . 'layout/' . $file)) {
-                file_put_contents($dir . 'layout/' . $file, $_installationHelper->getTemplate('layout_xml'));
+                file_put_contents($dir . 'layout/' . $file, $_installerHelper->getTemplate('layout_xml'));
             }
         }
 
         $this->_processReloadConfig();
 
-        $_installationHelper->setLast(__FUNCTION__);
+        $_installerHelper->setLast(__FUNCTION__);
     }
 }

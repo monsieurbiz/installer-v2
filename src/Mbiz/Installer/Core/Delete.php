@@ -32,26 +32,26 @@
 namespace Mbiz\Installer\Core;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Delete{
 
     protected function execute()
     {
-        $_installationHelper = new InstallationHelper();
+        $_installerHelper = new InstallerHelper();
         do {
-            $response = strtolower($_installationHelper->prompt('Are you sure you want to delete the module ' . red() . $_installationHelper->getModuleName() . white() . '? (yes/no)'));
+            $response = strtolower($_installerHelper->prompt('Are you sure you want to delete the module ' . red() . $_installerHelper->getModuleName() . white() . '? (yes/no)'));
         } while (!in_array($response, array('yes', 'no')));
 
 
 
         if ($response === 'yes') {
-            $_installationHelper->_rmdir($_installationHelper->getModuleDir());
-            @unlink($_installationHelper->getAppDir() . 'etc/modules/' . $_installationHelper->getModuleName() . '.xml');
-            $_installationHelper->_rmdir($_installationHelper->getDesignDir('frontend') . strtolower($_installationHelper->getModuleName()));
-            $_installationHelper->_rmdir($_installationHelper->getDesignDir('adminhtml') . strtolower($_installationHelper->getModuleName()));
-            foreach ($_installationHelper->getLocales() as $locale) {
-                @unlink($_installationHelper->getAppDir() . 'locale/' . $locale . '/' . $_installationHelper->getModuleName() . '.csv');
+            $_installerHelper->_rmdir($_installerHelper->getModuleDir());
+            @unlink($_installerHelper->getAppDir() . 'etc/modules/' . $_installerHelper->getModuleName() . '.xml');
+            $_installerHelper->_rmdir($_installerHelper->getDesignDir('frontend') . strtolower($_installerHelper->getModuleName()));
+            $_installerHelper->_rmdir($_installerHelper->getDesignDir('adminhtml') . strtolower($_installerHelper->getModuleName()));
+            foreach ($_installerHelper->getLocales() as $locale) {
+                @unlink($_installerHelper->getAppDir() . 'locale/' . $locale . '/' . $_installerHelper->getModuleName() . '.csv');
             }
             $this->_namespace = null;
             $this->_module = null;

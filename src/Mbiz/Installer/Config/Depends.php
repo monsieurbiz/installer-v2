@@ -32,7 +32,7 @@
 namespace Mbiz\Installer\Config;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 
 class Depends{
 
@@ -40,20 +40,20 @@ class Depends{
     {
         if (empty($params)) {
             do {
-                $params = $_installationHelper->prompt('Modules?');
+                $params = $_installerHelper->prompt('Modules?');
             } while (empty($params));
             $params = explode(' ', $params);
         }
 
-        $_installationHelper = new InstallationHelper();
-        $config = $_installationHelper->getConfig();
-        $etc = simplexml_load_file($etcFilename = $_installationHelper->getAppDir() . 'etc/modules/' . $_installationHelper->getModuleName() . '.xml');
+        $_installerHelper = new InstallerHelper();
+        $config = $_installerHelper->getConfig();
+        $etc = simplexml_load_file($etcFilename = $_installerHelper->getAppDir() . 'etc/modules/' . $_installerHelper->getModuleName() . '.xml');
 
-        if (!$configDepends = $config->modules->{$_installationHelper->getModuleName()}->depends) {
-            $configDepends = $config->modules->{$_installationHelper->getModuleName()}->addChild('depends');
+        if (!$configDepends = $config->modules->{$_installerHelper->getModuleName()}->depends) {
+            $configDepends = $config->modules->{$_installerHelper->getModuleName()}->addChild('depends');
         }
-        if (!$etcDepends = $etc->modules->{$_installationHelper->getModuleName()}->depends) {
-            $etcDepends = $etc->modules->{$_installationHelper->getModuleName()}->addChild('depends');
+        if (!$etcDepends = $etc->modules->{$_installerHelper->getModuleName()}->depends) {
+            $etcDepends = $etc->modules->{$_installerHelper->getModuleName()}->addChild('depends');
         }
 
 
@@ -76,7 +76,7 @@ class Depends{
             }
         }
 
-        $_installationHelper->writeConfig();
+        $_installerHelper->writeConfig();
 
         // Write etc/modules
         $dom = new DOMDocument('1.0');
@@ -95,6 +95,6 @@ class Depends{
         file_put_contents($etcFilename, (string)$tidy);
         unset($dom);
 
-        $_installationHelper->setLast(__FUNCTION__);
+        $_installerHelper->setLast(__FUNCTION__);
     }
 }
