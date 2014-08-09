@@ -94,9 +94,7 @@ class Data extends BaseCommand {
             }
         }
 
-        $_installationHelper = new InstallationHelper();
-        $_installationHelper->reloadConfig();
-
-        $_installationHelper->setLast(__FUNCTION__);
+        $_installerHelper->reloadConfig();
+        $_installerHelper->setLast(__FUNCTION__);
     }
 }

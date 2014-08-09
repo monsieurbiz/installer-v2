@@ -92,6 +92,9 @@ class Application extends BaseApplication
         //---------- Misc----------
         $this->add(new Misc\Doc);
 
+        //---------- Core----------
+        $this->add(new Core\Help);
+
         // Run the Installer shell
         $this->runShell();
     }

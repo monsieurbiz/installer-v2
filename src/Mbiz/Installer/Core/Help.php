@@ -32,12 +32,35 @@
 namespace Mbiz\Installer\Core;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Mbiz\Installer\Helper as InstallerHelper;
 
-class Help extends BaseCommand {
+class Help extends BaseCommand
+{
+
+    /**
+     * Configure the Command
+     * @return \Mbiz\Installer\Misc\Doc
+     */
+    public function configure()
+    {
+        return $this
+            ->setName('help')
+            ->setDescription('Output help')
+            ->addArgument(
+                'title',
+                InputArgument::REQUIRED,
+                'This will help you'
+            )
+            ->setTemplatesDirectory(__DIR__ . '/Resources/view/');
+    }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        echo white();
+        $_installerHelper = new InstallerHelper();
+        echo $_installerHelper->white();
         echo <<<HELP
   ---------------------- ----------------------- -------------------------------------------
  | COMMAND              | ALIAS                 | PARAMETERS                                |

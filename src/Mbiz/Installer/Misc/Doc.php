@@ -32,7 +32,7 @@
 namespace Mbiz\Installer\Misc;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper as InstallationHelper;
+use Mbiz\Installer\Helper as InstallerHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -62,8 +62,8 @@ class Doc extends BaseCommand
     {
         $title = $input->getArgument('title');
 
-        $installationHelper = new InstallationHelper();
-        $dir = $installationHelper->getModuleDir('doc');
+        $installerHelper = new InstallerHelper();
+        $dir = $installerHelper->getModuleDir('doc');
 
         if (!is_file($filename = $dir . '/README.md')) {
             $output->writeLn($this->render('doc.twig', ['title' => $title]));

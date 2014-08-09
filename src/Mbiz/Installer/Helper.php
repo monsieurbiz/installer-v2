@@ -34,6 +34,22 @@ namespace Mbiz\Installer;
 
 
 class Helper {
+
+    function red()      { return $this->isUnix() ? "\033[01;31m" : ""; }
+    function yellow()   { return $this->isUnix() ? "\033[01;33m" : ""; }
+    function blue()     { return $this->isUnix() ? "\033[01;34m" : ""; }
+    function green()    { return $this->isUnix() ? "\033[01;32m" : ""; }
+    function white()    { return $this->isUnix() ? "\033[00m" : ""; }
+
+    /**
+     * Is the operating system unix?
+     * @static
+     * @return bool
+     */
+    static public function isUnix()
+    {
+        return (OS == 'unix');
+    }
     
     public function _getLocalXml()
     {
