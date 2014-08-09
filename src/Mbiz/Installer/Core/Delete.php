@@ -38,19 +38,20 @@ class Delete{
 
     protected function execute()
     {
+        $_installationHelper = new InstallationHelper();
         do {
-            $response = strtolower($this->prompt('Are you sure you want to delete the module ' . red() . $this->getModuleName() . white() . '? (yes/no)'));
+            $response = strtolower($_installationHelper->prompt('Are you sure you want to delete the module ' . red() . $_installationHelper->getModuleName() . white() . '? (yes/no)'));
         } while (!in_array($response, array('yes', 'no')));
 
-        $_installationHelper = new InstallationHelper();
+
 
         if ($response === 'yes') {
-            $_installationHelper->_rmdir($this->getModuleDir());
-            @unlink($this->getAppDir() . 'etc/modules/' . $this->getModuleName() . '.xml');
-            $_installationHelper->_rmdir($this->getDesignDir('frontend') . strtolower($this->getModuleName()));
-            $_installationHelper->_rmdir($this->getDesignDir('adminhtml') . strtolower($this->getModuleName()));
+            $_installationHelper->_rmdir($_installationHelper->getModuleDir());
+            @unlink($_installationHelper->getAppDir() . 'etc/modules/' . $_installationHelper->getModuleName() . '.xml');
+            $_installationHelper->_rmdir($_installationHelper->getDesignDir('frontend') . strtolower($_installationHelper->getModuleName()));
+            $_installationHelper->_rmdir($_installationHelper->getDesignDir('adminhtml') . strtolower($_installationHelper->getModuleName()));
             foreach ($_installationHelper->getLocales() as $locale) {
-                @unlink($this->getAppDir() . 'locale/' . $locale . '/' . $this->getModuleName() . '.csv');
+                @unlink($_installationHelper->getAppDir() . 'locale/' . $locale . '/' . $_installationHelper->getModuleName() . '.csv');
             }
             $this->_namespace = null;
             $this->_module = null;

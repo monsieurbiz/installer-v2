@@ -42,7 +42,7 @@ class Model extends BaseCommand
 
         if (empty($params)) {
             do {
-                $name = ucfirst($this->prompt('Class?'));
+                $name = ucfirst($_installationHelper->prompt('Class?'));
             } while (empty($name));
         } else {
             $name = ucfirst(array_shift($params));
@@ -63,30 +63,30 @@ class Model extends BaseCommand
 
         $filename = $dir . $name . '.php';
         if (!is_file($filename)) {
-            file_put_contents($filename, $this->getTemplate('model_class', array(
+            file_put_contents($filename, $_installationHelper->getTemplate('model_class', array(
                 '{Name}' => implode('_', $names) . (empty($names) ? '' : '_') . $name,
                 'Mage_Core_Model_Abstract' => ($name == 'Session' ? 'Mage_Core_Model_Session_Abstract' : 'Mage_Core_Model_Abstract')
             )));
         }
 
         if (empty($params)) {
-            $params = explode(' ', $this->prompt('Methods?'));
+            $params = explode(' ', $_installationHelper->prompt('Methods?'));
         }
 
         $content = file_get_contents($filename);
-        $this->replaceVarsAndMethods($content, $params, $type);
+        $_installationHelper->replaceVarsAndMethods($content, $params, $type);
 
         // Other data
         if (isset($data['consts'])) {
-            $tag = $this->getTag('new_const');
+            $tag = $_installationHelper->getTag('new_const');
             $content = str_replace($tag, $data['consts'] . "\n$tag", $content);
         }
         if (isset($data['vars'])) {
-            $tag = $this->getTag('new_var');
+            $tag = $_installationHelper->getTag('new_var');
             $content = str_replace($tag, $data['vars'] . "\n$tag", $content);
         }
         if (isset($data['methods'])) {
-            $tag = $this->getTag('new_method');
+            $tag = $_installationHelper->getTag('new_method');
             $content = str_replace($tag, $data['methods'] . "\n$tag", $content);
         }
 

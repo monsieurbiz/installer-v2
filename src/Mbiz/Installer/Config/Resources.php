@@ -40,15 +40,15 @@ class Resources extends BaseCommand
         $_installationHelper = new InstallationHelper();
         list($dir, $created) = $_installationHelper->_createModelDir();
 
-        $config = $this->getConfig();
+        $config = $_installationHelper->getConfig();
         $models = $config->global->models;
 
-        if (!$models->{strtolower($this->getModuleName())}->resourceModel) {
-            $models->{strtolower($this->getModuleName())}->addChild('resourceModel', strtolower($this->getModuleName()) . '_resource');
-            $resource = $models->addChild(strtolower($this->getModuleName()) . '_resource');
-            $resource->addChild('class', $this->getModuleName() . '_Model_Resource');
+        if (!$models->{strtolower($_installationHelper->getModuleName())}->resourceModel) {
+            $models->{strtolower($_installationHelper->getModuleName())}->addChild('resourceModel', strtolower($_installationHelper->getModuleName()) . '_resource');
+            $resource = $models->addChild(strtolower($_installationHelper->getModuleName()) . '_resource');
+            $resource->addChild('class', $_installationHelper->getModuleName() . '_Model_Resource');
             $resource->addChild('entities');
-            $this->writeConfig();
+            $_installationHelper->writeConfig();
             @mkdir($dir = $dir . 'Resource/');
         }
 

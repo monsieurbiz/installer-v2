@@ -36,11 +36,14 @@ use Mbiz\Installer\Helper as InstallationHelper;
 
 class Controller{
 
-    protected function execute(array $params, array $data = array())
+    public function execute(array $params, array $data = array())
     {
+
+        $_installationHelper = new InstallationHelper();
+
         if (empty($params)) {
             do {
-                $name = ucfirst($this->prompt('Name? (enter for index)'));
+                $name = ucfirst($_installationHelper->prompt('Name? (enter for index)'));
                 if (empty($name)) {
                     $name = 'Index';
                 }
@@ -55,7 +58,7 @@ class Controller{
         $names = array_map('ucfirst', explode('_', $name));
         $name = array_pop($names);
 
-        $dir = $this->getModuleDir('controllers');
+        $dir = $_installationHelper->getModuleDir('controllers');
         foreach ($names as $rep) {
             $dir .= $rep . '/';
             if (!is_dir($dir)) {
@@ -65,15 +68,15 @@ class Controller{
 
         $filename = $dir . $name . 'Controller.php';
         if (!is_file($filename)) {
-            $content = $this->getTemplate('controller_class', array(
+            $content = $_installationHelper->getTemplate('controller_class', array(
                 '{Name}' => implode('_', $names) . (empty($names) ? '' : '_') . $name,
                 'Mage_Core_Controller_Front_Action' => $isAdminhtml ? 'Mage_Adminhtml_Controller_Action' : 'Mage_Core_Controller_Front_Action'
             ));
 
             // Is allowed method
             if ($isAdminhtml) {
-                $tag = $this->getTag('new_method');
-                $method = $this->getTemplate('is_allowed_method');
+                $tag = $_installationHelper->getTag('new_method');
+                $method = $_installationHelper->getTemplate('is_allowed_method');
                 $content = str_replace($tag, "$tag\n" . $method, $content);
             }
 
@@ -81,10 +84,8 @@ class Controller{
         }
 
         if (empty($params)) {
-            $params = explode(' ', $this->prompt('Action?'));
+            $params = explode(' ', $_installationHelper->prompt('Action?'));
         }
-
-        $_installationHelper = new InstallationHelper();
 
         // Vars & Methods
         $content = file_get_contents($filename);
@@ -92,15 +93,15 @@ class Controller{
 
         // Other data
         if (isset($data['consts'])) {
-            $tag = $this->getTag('new_const');
+            $tag = $_installationHelper->getTag('new_const');
             $content = str_replace($tag, $data['consts'] . "\n$tag", $content);
         }
         if (isset($data['vars'])) {
-            $tag = $this->getTag('new_var');
+            $tag = $_installationHelper->getTag('new_var');
             $content = str_replace($tag, $data['vars'] . "\n$tag", $content);
         }
         if (isset($data['methods'])) {
-            $tag = $this->getTag('new_method');
+            $tag = $_installationHelper->getTag('new_method');
             $content = str_replace($tag, $data['methods'] . "\n$tag", $content);
         }
 

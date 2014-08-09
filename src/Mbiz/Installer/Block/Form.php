@@ -37,15 +37,19 @@ use Mbiz\Installer\Config\Resources as Resources;
 use Mbiz\Installer\Model\Entity as Entity;
 use Mbiz\Installer\Controller\Controller as Controller;
 use Mbiz\Installer\Router\Router as Router;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Form{
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $_installationHelper = new InstallationHelper();
+
         // Check entity
         if (empty($params)) {
             do {
-                $entity = $this->prompt('Which entity?');
+                $entity = $_installationHelper->prompt('Which entity?');
             } while (empty($entity));
         } else {
             $entity = array_shift($params);
@@ -55,11 +59,11 @@ class Form{
         $_resources = new Resources();
         $_resources->execute(array());
 
-        $config = $this->getConfig();
+        $config = $_installationHelper->getConfig();
         if (!isset($config->global)) {
             $config->addChild('global');
         }
-        $resourceModel = $config->global->models->{strtolower($this->getModuleName())}->resourceModel;
+        $resourceModel = $config->global->models->{strtolower($_installationHelper->getModuleName())}->resourceModel;
         $entities = $config->global->models->{$resourceModel}->entities;
         if (!$entities->{strtolower($entity)}) {
             $_entity = new Entity();
@@ -72,15 +76,15 @@ class Form{
         array_unshift($names, 'Adminhtml');
         array_push($names, 'Edit');
 
-        list($dir, $created) = $this->getModuleDir('Block', true);
+        list($dir, $created) = $_installationHelper->getModuleDir('Block', true);
 
         if ($created) {
-            $config = $this->getConfig();
+            $config = $_installationHelper->getConfig();
             $global = $config->global;
             if (!isset($global['blocks'])) {
-                $global->addChild('blocks')->addChild(strtolower($this->getModuleName()))->addChild('class', $this->getModuleName() . '_Block');
+                $global->addChild('blocks')->addChild(strtolower($_installationHelper->getModuleName()))->addChild('class', $_installationHelper->getModuleName() . '_Block');
             }
-            $this->writeConfig();
+            $_installationHelper->writeConfig();
         }
 
         foreach ($names as $rep) {
@@ -94,15 +98,15 @@ class Form{
         $filename = $dir . '../' . end($names) . '.php';
 
         if (!is_file($filename)) {
-            file_put_contents($filename, $this->getTemplate('form_container_block', array(
+            file_put_contents($filename, $_installationHelper->getTemplate('form_container_block', array(
                 '{Entity}' => end($entityTab),
                 '{entity}' => strtolower(end($entityTab)),
                 '{current}' => strtolower(end($entityTab)),
                 '{Name}' => implode('_', $names),
-                '{blockGroup}' => strtolower($this->getModuleName()),
+                '{blockGroup}' => strtolower($_installationHelper->getModuleName()),
                 '{controller}' => 'adminhtml_' . strtolower($entity),
-                '{entity_mage_identifier}' => strtolower($this->getModuleName() . '/' . implode('_', $entityTab)),
-                '{Entity_Name}' => $this->getModuleName() . '_Model_' . implode('_', $entityTab),
+                '{entity_mage_identifier}' => strtolower($_installationHelper->getModuleName() . '/' . implode('_', $entityTab)),
+                '{Entity_Name}' => $_installationHelper->getModuleName() . '_Model_' . implode('_', $entityTab),
             )));
         }
 
@@ -110,22 +114,22 @@ class Form{
         $filename = $dir . '/Form.php';
 
         if (!is_file($filename)) {
-            file_put_contents($filename, $this->getTemplate('form_block', array(
+            file_put_contents($filename, $_installationHelper->getTemplate('form_block', array(
                 '{Entity}' => end($entityTab),
                 '{Name}' => implode('_', $names) . '_Form',
                 '{current}' => strtolower(end($entityTab)),
                 '{id_field}' => strtolower(end($entityTab)) . '_id',
-                '{Entity_Name}' => $this->getModuleName() . '_Model_' . implode('_', $entityTab),
+                '{Entity_Name}' => $_installationHelper->getModuleName() . '_Model_' . implode('_', $entityTab),
             )));
         }
 
         // Methods
-        $methods = $this->getTemplate('form_controller_methods', array(
+        $methods = $_installationHelper->getTemplate('form_controller_methods', array(
             '{Entity}' => end($entityTab),
             '{entity}' => strtolower(end($entityTab)),
             '{current}' => strtolower(end($entityTab)),
             '{form_name}' => strtolower(implode('_', $names)),
-            '{entity_mage_identifier}' => strtolower($this->getModuleName() . '/' . implode('_', $entityTab)),
+            '{entity_mage_identifier}' => strtolower($_installationHelper->getModuleName() . '/' . implode('_', $entityTab)),
         ));
 
         // Grid controller..

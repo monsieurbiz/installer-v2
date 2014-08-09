@@ -33,9 +33,10 @@ namespace Mbiz\Installer\Config;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Config\Info\Event as InfoEvent;
-use Mbiz\Installer\Rouer\Info\Router as InfoRouter;
-use Mbiz\Installer\Rouer\Info\Router as InfoLayout;
-use Mbiz\Installer\Rouer\Info\Router as InfoTranslate;
+use Mbiz\Installer\Config\Info\Router as InfoRouter;
+use Mbiz\Installer\Config\Info\Router as InfoLayout;
+use Mbiz\Installer\Config\Info\Router as InfoTranslate;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Info{
 
@@ -48,7 +49,8 @@ class Info{
         $g = green();
         $w = white();
 
-        $config = $this->getConfig();
+        $_installationHelper = new InstallationHelper();
+        $config = $_installationHelper->getConfig();
 
         $width = 80;
 

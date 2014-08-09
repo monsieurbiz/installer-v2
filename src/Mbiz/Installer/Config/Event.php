@@ -40,7 +40,7 @@ class Event{
     {
         if (empty($params)) {
             do {
-                $eventName = $this->prompt('Event Name?');
+                $eventName = $_installationHelper->prompt('Event Name?');
             } while (empty($eventName));
         } else {
             $eventName = array_shift($params);
@@ -48,7 +48,7 @@ class Event{
 
         if (empty($params)) {
             do {
-                $name = $this->prompt('Observer Name?');
+                $name = $_installationHelper->prompt('Observer Name?');
             } while (empty($name));
         } else {
             $name = array_shift($params);
@@ -56,7 +56,7 @@ class Event{
 
         if (empty($params)) {
             do {
-                $class = $this->prompt('Model Class?');
+                $class = $_installationHelper->prompt('Model Class?');
             } while (empty($class));
         } else {
             $class = array_shift($params);
@@ -64,7 +64,7 @@ class Event{
 
         if (empty($params)) {
             do {
-                $method = $this->prompt('Method?');
+                $method = $_installationHelper->prompt('Method?');
             } while (empty($method));
         } else {
             $method = array_shift($params);
@@ -74,7 +74,7 @@ class Event{
             $where = array_shift($params);
         }
         while (!isset($where) || !in_array($where, array('front', 'admin', 'global'))) {
-            $where = $this->prompt('Where? (enter for front)');
+            $where = $_installationHelper->prompt('Where? (enter for front)');
             if (empty($where)) {
                 $where = 'front';
             }
@@ -87,8 +87,10 @@ class Event{
             $where = 'global';
         }
 
+        $_installationHelper = new InstallationHelper();
+
         // Config
-        $config = $this->getConfig();
+        $config = $_installationHelper->getConfig();
         if (!isset($config->{$where})) {
             $config->addChild($where);
         }
@@ -117,9 +119,8 @@ class Event{
         $observer->class = $class;
         $observer->method = $method;
 
-        $this->writeConfig();
+        $_installationHelper->writeConfig();
 
-        $_installationHelper = new InstallationHelper();
         $_installationHelper->setLast(__FUNCTION__);
     }
 }

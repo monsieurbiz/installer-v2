@@ -42,7 +42,7 @@ class Layout{
             $where = $params[0];
         } else {
             do {
-                $where = $this->prompt('Where? (enter for front)');
+                $where = $_installationHelper->prompt('Where? (enter for front)');
                 if (empty($where)) {
                     $where = 'front';
                 }
@@ -55,22 +55,23 @@ class Layout{
             $where = 'frontend';
         }
 
-        $config = $this->getConfig();
+        $_installationHelper = new InstallationHelper();
+        $config = $_installationHelper->getConfig();
 
         if (!isset($config->{$where})) {
             $config->addChild($where);
         }
 
         if (!isset($config->{$where}->layout)) {
-            $file = strtolower($this->getModuleName()) . '.xml';
+            $file = strtolower($_installationHelper->getModuleName()) . '.xml';
             $child = $config->{$where}
                 ->addChild('layout')
                 ->addChild('updates')
-                ->addChild(strtolower($this->getModuleName()));
-            $child->addAttribute('module', $this->getModuleName());
+                ->addChild(strtolower($_installationHelper->getModuleName()));
+            $child->addAttribute('module', $_installationHelper->getModuleName());
             $child->addChild('file', $file);
-            $this->writeConfig();
-            $dir = $this->getAppDir() . 'design/' . $where . '/';
+            $_installationHelper->writeConfig();
+            $dir = $_installationHelper->getAppDir() . 'design/' . $where . '/';
 
             if ($this->_pool == 'community') {
                 $dirs = array('base', 'default');
@@ -93,13 +94,12 @@ class Layout{
             }
 
             if (!file_exists($dir . 'layout/' . $file)) {
-                file_put_contents($dir . 'layout/' . $file, $this->getTemplate('layout_xml'));
+                file_put_contents($dir . 'layout/' . $file, $_installationHelper->getTemplate('layout_xml'));
             }
         }
 
         $this->_processReloadConfig();
 
-        $_installationHelper = new InstallationHelper();
         $_installationHelper->setLast(__FUNCTION__);
     }
 }

@@ -46,7 +46,7 @@ class Entity
 
         if (empty($params)) {
             do {
-                $name = ucfirst($this->prompt('Entity?'));
+                $name = ucfirst($_installationHelper->prompt('Entity?'));
             } while (empty($name));
         } else {
             $name = ucfirst(array_shift($params));
@@ -54,7 +54,7 @@ class Entity
 
         if (empty($params)) {
             do {
-                $table = $this->prompt('Table?');
+                $table = $_installationHelper->prompt('Table?');
             } while (empty($table));
         } else {
             $table = array_shift($params);
@@ -65,11 +65,13 @@ class Entity
             $noFiles = (array_shift($params) == '-');
         }
 
-        $config = $this->getConfig();
+        $_installationHelper = new InstallationHelper();
+
+        $config = $_installationHelper->getConfig();
         if (!isset($config->global)) {
             $config->addChild('global');
         }
-        $entities = $config->global->models->{strtolower($this->getModuleName() . '_resource')}->entities;
+        $entities = $config->global->models->{strtolower(getModuleName() . '_resource')}->entities;
 
         $entity = implode('_', array_map('ucfirst', explode('_', $name)));
 
@@ -79,19 +81,19 @@ class Entity
 
         if ($entities->{strtolower($name)}) {
             echo red() . "Entity $entity already exist.\n" . white();
-            $this->_processReloadConfig();
+            $_installationHelper->_processReloadConfig();
             return;
         }
 
         $entities->addChild(strtolower($name))->addChild('table', $table);
-        $this->writeConfig();
+        $_installationHelper->writeConfig();
 
-        $dir = $this->getModuleDir('Model');
+        $dir = $_installationHelper->getModuleDir('Model');
 
-        $construct = $this->getTemplate('entity_class_construct', array(
+        $construct = $_installationHelper->getTemplate('entity_class_construct', array(
             '{Entity}' => $entity,
             '{entity}' => strtolower($entity),
-            '{resourceModel}' => strtolower($this->getModuleName() . '/' . $entity)
+            '{resourceModel}' => strtolower($_installationHelper->getModuleName() . '/' . $entity)
         ));
 
         foreach ($names as $name) {
@@ -103,13 +105,13 @@ class Entity
         }
 
         if (!$noFiles) {
-            file_put_contents($dir . $filename, $this->getTemplate('model_class', array(
+            file_put_contents($dir . $filename, $_installationHelper->getTemplate('model_class', array(
                 '{Name}' => $entity,
-                $this->getTag('new_method') => $construct . "\n\n" . $this->getTag('new_method')
+                $_installationHelper->getTag('new_method') => $construct . "\n\n" . $_installationHelper->getTag('new_method')
             )));
         }
 
-        $dir = $this->getModuleDir('Model') . 'Resource/';
+        $dir = $_installationHelper->getModuleDir('Model') . 'Resource/';
 
         foreach ($names as $name) {
             if (!is_dir($dir = $dir . $name . '/')) {
@@ -120,9 +122,9 @@ class Entity
         }
 
         if (!$noFiles) {
-            file_put_contents($dir . $filename, $this->getTemplate('mysql4_entity_class', array(
+            file_put_contents($dir . $filename, $_installationHelper->getTemplate('mysql4_entity_class', array(
                 '{Name}' => $entity,
-                '{mainTable}' => strtolower($this->getModuleName() . '/' . $entity),
+                '{mainTable}' => strtolower($_installationHelper->getModuleName() . '/' . $entity),
                 '{idField}' => strtolower($lastName) . '_id'
             )));
         }
@@ -133,15 +135,14 @@ class Entity
             }
         }
         if (!$noFiles) {
-            file_put_contents($dir . 'Collection.php', $this->getTemplate('mysql4_collection_class', array(
+            file_put_contents($dir . 'Collection.php', $_installationHelper->getTemplate('mysql4_collection_class', array(
                 '{Name}' => $entity,
-                '{model}' => strtolower($this->getModuleName() . '/' . $entity)
+                '{model}' => strtolower($_installationHelper->getModuleName() . '/' . $entity)
             )));
         }
 
         $this->_processReloadConfig();
 
-        $_installationHelper = new InstallationHelper();
         $_installationHelper->setLast(__FUNCTION__);
     }
 }

@@ -61,11 +61,11 @@ class Doc extends BaseCommand
     {
         $title = $input->getArgument('title');
 
-        $dir = __DIR___;//$this->getModuleDir('doc');
+        $dir = __DIR___;
 
         if (!is_file($filename = $dir . '/README.md')) {
             $output->writeLn($this->render('doc.twig', ['name' => $name]));
-            file_put_contents($filename, $this->getTemplate('doc_readme', array(
+            file_put_contents($filename, $_installationHelper->getTemplate('doc_readme', array(
                'title' => $title
             )));
         }

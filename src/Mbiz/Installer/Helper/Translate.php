@@ -42,7 +42,7 @@ class Translate extends BaseCommand
             $where = $params[0];
         } else {
             do {
-                $where = $this->prompt('Where? (enter for front)');
+                $where = $_installationHelper->prompt('Where? (enter for front)');
                 if (empty($where)) {
                     $where = 'front';
                 }
@@ -55,7 +55,8 @@ class Translate extends BaseCommand
             $where = 'frontend';
         }
 
-        $config = $this->getConfig();
+        $_installationHelper = new InstallationHelper();
+        $config = $_installationHelper->getConfig();
 
         if (!isset($config->{$where})) {
             $config->addChild($where);
@@ -67,23 +68,22 @@ class Translate extends BaseCommand
             $config->{$where}
                 ->addChild('translate')
                 ->addChild('modules')
-                ->addChild($this->getModuleName())
+                ->addChild($_installationHelper->getModuleName())
                 ->addChild('files')
-                ->addChild('default', $this->getModuleName() . '.csv');
-            $this->writeConfig();
+                ->addChild('default', $_installationHelper->getModuleName() . '.csv');
+            $_installationHelper->writeConfig();
 
             foreach ($_installationHelper->getLocales() as $locale) {
-                $dir = $this->getAppDir() . 'locale/' . $locale . '/';
+                $dir = $_installationHelper->getAppDir() . 'locale/' . $locale . '/';
                 if (!is_dir($dir)) {
                     mkdir($dir);
                 }
-                touch($dir . $this->getModuleName() . '.csv');
+                touch($dir . $_installationHelper->getModuleName() . '.csv');
             }
         }
 
         $this->_processReloadConfig();
 
-        $_installationHelper = new InstallationHelper();
         $_installationHelper->setLast(__FUNCTION__);
     }
 }

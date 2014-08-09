@@ -32,6 +32,7 @@
 namespace Mbiz\Installer\Config;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper as InstallationHelper;
 
 class Defaultconfig{
 
@@ -39,7 +40,7 @@ class Defaultconfig{
     {
         if (empty($params)) {
             do {
-                $name = $this->prompt("Name?");
+                $name = $_installationHelper->prompt("Name?");
             } while (empty($name));
         } else {
             $name = array_shift($params);
@@ -47,15 +48,16 @@ class Defaultconfig{
 
         if (!count($params)) {
             do {
-                $value = $this->prompt("Value?");
+                $value = $_installationHelper->prompt("Value?");
             } while ($value === '');
         } else {
             $value = array_shift($params);
         }
 
+        $_installationHelper = new InstallationHelper();
         // conf
         /* @var $config SimpleXMLElement */
-        $config = $this->getConfig();
+        $config = $_installationHelper->getConfig();
         if (!isset($config->default)) {
             $config->addChild('default');
         }
@@ -75,6 +77,6 @@ class Defaultconfig{
         $no = $node->ownerDocument;
         $node->appendChild($no->createCDATASection($value));
 
-        $this->writeConfig();
+        $_installationHelper->writeConfig();
     }
 }

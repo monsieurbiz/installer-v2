@@ -40,19 +40,20 @@ class Depends{
     {
         if (empty($params)) {
             do {
-                $params = $this->prompt('Modules?');
+                $params = $_installationHelper->prompt('Modules?');
             } while (empty($params));
             $params = explode(' ', $params);
         }
 
-        $config = $this->getconfig();
-        $etc = simplexml_load_file($etcFilename = $this->getAppDir() . 'etc/modules/' . $this->getModuleName() . '.xml');
+        $_installationHelper = new InstallationHelper();
+        $config = $_installationHelper->getConfig();
+        $etc = simplexml_load_file($etcFilename = $_installationHelper->getAppDir() . 'etc/modules/' . $_installationHelper->getModuleName() . '.xml');
 
-        if (!$configDepends = $config->modules->{$this->getModuleName()}->depends) {
-            $configDepends = $config->modules->{$this->getModuleName()}->addChild('depends');
+        if (!$configDepends = $config->modules->{$_installationHelper->getModuleName()}->depends) {
+            $configDepends = $config->modules->{$_installationHelper->getModuleName()}->addChild('depends');
         }
-        if (!$etcDepends = $etc->modules->{$this->getModuleName()}->depends) {
-            $etcDepends = $etc->modules->{$this->getModuleName()}->addChild('depends');
+        if (!$etcDepends = $etc->modules->{$_installationHelper->getModuleName()}->depends) {
+            $etcDepends = $etc->modules->{$_installationHelper->getModuleName()}->addChild('depends');
         }
 
 
@@ -75,7 +76,7 @@ class Depends{
             }
         }
 
-        $this->writeConfig();
+        $_installationHelper->writeConfig();
 
         // Write etc/modules
         $dom = new DOMDocument('1.0');
@@ -94,7 +95,6 @@ class Depends{
         file_put_contents($etcFilename, (string)$tidy);
         unset($dom);
 
-        $_installationHelper = new InstallationHelper();
         $_installationHelper->setLast(__FUNCTION__);
     }
 }

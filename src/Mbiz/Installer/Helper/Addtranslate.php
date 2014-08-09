@@ -39,8 +39,9 @@ class Addtranslate extends BaseCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $config = $this->getConfig();
-        if (!isset($config->frontend)) {
+        $_installationHelper = new InstallationHelper();
+        $config = $_installationHelper->getConfig();
+        if (!isset($_installationHelper->frontend)) {
             $config->addChild('frontend');
         }
         if (!isset($config->frontend->translate) && !isset($config->adminhtml->translate)) {
@@ -49,21 +50,20 @@ class Addtranslate extends BaseCommand
         }
 
         do {
-            $translate = $this->prompt('Translate?');
+            $translate = $_installationHelper->prompt('Translate?');
         } while (empty($translate));
 
         $translate = str_replace('"', '""', $translate);
-        $_installationHelper = new InstallationHelper();
 
         foreach ($_installationHelper->getLocales() as $locale) {
-            $traduction = $this->prompt('Traduction for ' . red() . $locale . white() . '?');
+            $traduction = $_installationHelper->prompt('Traduction for ' . red() . $locale . white() . '?');
             if (empty($traduction)) {
                 $traduction = $translate;
             } else {
                 $traduction = str_replace('"', '""', $traduction);
             }
-            $dir = $this->getAppDir() . 'locale/' . $locale . '/';
-            $filename = $dir . $this->getModuleName() . '.csv';
+            $dir = $_installationHelper->getAppDir() . 'locale/' . $locale . '/';
+            $filename = $dir . $_installationHelper->getModuleName() . '.csv';
             if (is_dir($dir) && is_file($filename)) {
                 $fp = fopen($filename, 'a');
                 $str = '"' . $translate . '","' . $traduction . '"' . "\n";

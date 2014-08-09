@@ -47,13 +47,14 @@ class Email
         // Get email name
         if (empty($params)) {
             do {
-                $name = $this->prompt('Email identifier?');
+                $name = $_installationHelper->prompt('Email identifier?');
             } while (empty($name));
         }
         $name = strtolower($name);
 
+        $_installationHelper = new InstallationHelper();
         // Configuration
-        $config = $this->getConfig();
+        $config = $_installationHelper->getConfig();
 
         // Create templte node if not exists
         if (!isset($config->global)) {
@@ -72,10 +73,10 @@ class Email
         $email = $template->email;
 
         // Create email node
-        $moduleName = strtolower($this->getModuleName());
+        $moduleName = strtolower($_installationHelper->getModuleName());
         $node = $email->addChild($moduleName . '_email_' . $name);
         $node->addAttribute('translate', 'label');
-        $node->addAttribute('module', strtolower($this->getModuleName()));
+        $node->addAttribute('module', strtolower($_installationHelper->getModuleName()));
 
         $ext = '.html';
         $node->addChild('label', 'Your email template name');
@@ -87,7 +88,7 @@ class Email
         $_defaultConfig->execute(array($moduleName . '/email/' . $name, $moduleName . '_email_' . $name));
 
         // Save configuration
-        $this->writeconfig();
+        $_installationHelper->writeconfig();
 
         // Model
         $_model = new Model();
@@ -95,16 +96,15 @@ class Email
             'email',
             'CONFIG_KEY_EMAIL_' . strtoupper($name) . "=$moduleName/email/$name"
         ), 'model', array(
-            'methods' => $this->getTemplate('email_method', array(
+            'methods' => $_installationHelper->getTemplate('email_method', array(
                 '{NAME}' => strtoupper($name),
-                '{methodName}' => lcfirst($this->_camelize('send_' . $name)),
+                '{methodName}' => lcfirst($_installationHelper->_camelize('send_' . $name)),
                 '{name}' => $name
             ))
         ));
 
         // The file
-        $appDir = $this->getAppDir();
-        $_installationHelper = new InstallationHelper();
+        $appDir = $_installationHelper->getAppDir();
         foreach ($_installationHelper->getLocales() as $locale) {
             $dir = $appDir . '/locale/' . $locale;
             if (!is_dir($dir)) {
@@ -124,7 +124,7 @@ class Email
             }
             $filename = $finalDir . '/' . $name . $ext;
             if (!is_file($filename)) {
-                file_put_contents($filename, $this->getTemplate('email_template'));
+                file_put_contents($filename, $_installationHelper->getTemplate('email_template'));
             }
         }
     }
