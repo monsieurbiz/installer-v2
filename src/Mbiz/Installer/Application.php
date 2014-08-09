@@ -77,9 +77,10 @@ class Application extends BaseApplication
         $this->add(new Hello\Hello);
         $this->add(new Core\Unicorn);
         $this->add(new Core\Module);
+        $this->add(new Helper\Helper);
 
         //---------- Block----------
-        //$this->add(new Block\Adminhtml);
+        $this->add(new Block\Adminhtml);
         //$this->add(new Block\Block);
         //$this->add(new Block\Email);
         //$this->add(new Block\Form);

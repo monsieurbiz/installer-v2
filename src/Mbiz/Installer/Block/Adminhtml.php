@@ -36,6 +36,8 @@ use Mbiz\Installer\Helper\Helper as Helper;
 use Mbiz\Installer\Helper as InstallerHelper;
 use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class Adminhtml extends BaseCommand {
 
@@ -57,7 +59,7 @@ class Adminhtml extends BaseCommand {
         $command = $this->getApplication()->find('helper');
         $arguments = array(
             'command' => 'helper',
-            'params'    => array('data', '-')
+            'name'    => array('data', '-')
         );
 
         $input = new ArrayInput($arguments);

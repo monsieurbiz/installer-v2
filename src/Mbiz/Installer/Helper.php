@@ -33,8 +33,60 @@
 namespace Mbiz\Installer;
 
 
-class Helper {
-    
+class Helper
+{
+    protected $_templates;
+
+    protected $_pool = 'local';
+    protected $_namespace;
+    protected $_module;
+
+    protected $_params;
+    protected $_mageConfig;
+
+    protected $_stop = false;
+
+    protected $_lastMethod;
+    protected $_lastParams;
+
+    protected $_cli = true;
+
+    static protected $_config = null;
+
+    public function __construct()
+    {
+        // Configuration
+        self::$_config = (object)array();
+        self::$_config->pwd = defined('PWD') ? PWD : getenv('PWD');
+        self::$_config->path = $this->getGit('path', '');
+        self::$_config->license = $this->getGit('license', '');
+        self::$_config->user_email = $this->getGit('user-email');
+        self::$_config->user_twitter = $this->getGit('user-twitter');
+        self::$_config->user_name = $this->getGit('user-name');
+        self::$_config->design = $this->getGit('design', 'base_default');
+        self::$_config->company_name = $this->getGit('company-name');
+        self::$_config->company_name_short = $this->getGit('company-name-short');
+        self::$_config->company_url = $this->getGit('company-url');
+        self::$_config->locales = $this->getGit('locales', 'fr_FR,en_US');
+    }
+
+    /**
+     * Returns a git configuration
+     * @param $name string The configuration Name
+     * @return string
+     */
+    public function getGit($name, $default = '')
+    {
+        $output = '';
+        $return = '';
+        exec('git config --get jbh-installer.' . $name, $output, $return);
+        if ($return === 1) {
+            return $default;
+        } else {
+            return trim($output[0]);
+        }
+    }
+
     public function _getLocalXml()
     {
         if (!is_file($filename = $this->getAppDir() . 'etc/local.xml')) {
@@ -193,7 +245,7 @@ class Helper {
         }
 
         if (strpos($content, '{this}') !== false) {
-            $tmpContent = &$content;
+            $tmpContent = & $content;
             $className = $this->_getClassName($tmpContent);
             $content = str_replace('{this}', $className, $content);
         }
@@ -244,7 +296,8 @@ class Helper {
         return $this->_mageConfig;
     }
 
-    public function reloadConfig() {
+    public function reloadConfig()
+    {
         $this->_mageConfig = null;
     }
 
@@ -278,7 +331,7 @@ class Helper {
                 'output-encoding' => 'utf8',
             ));
             $tidy->cleanRepair();
-            file_put_contents($this->getConfigFilename(), (string) $tidy);
+            file_put_contents($this->getConfigFilename(), (string)$tidy);
             unset($dom);
             $this->_mageConfig = null;
         }
@@ -295,18 +348,18 @@ class Helper {
         $template = preg_replace('`^(?:.+)?BEGIN ' . $name . "\n(.+)\nEND " . $name . '(?:.+)?$`is', '$1', $this->_templates);
 
         $searchAndReplace = array(
-            '<_?php'            => '<?php',
-            '<_?xml'            => '<?xml',
-            '{Module_Name}'     => $this->getModuleName(),
-            '{module_name}'     => strtolower($this->getModuleName()),
-            '{LICENSE}'         => self::$_config->license,
-            '{USER_NAME}'       => self::$_config->user_name,
-            '{USER_EMAIL}'      => self::$_config->user_email,
-            '{USER_TWITTER}'    => self::$_config->user_twitter,
-            '{Namespace}'       => $this->_namespace,
-            '{date_year}'       => date('Y'),
-            '{COMPANY_NAME}'    => self::$_config->company_name,
-            '{COMPANY_URL}'     => self::$_config->company_url
+            '<_?php' => '<?php',
+            '<_?xml' => '<?xml',
+            '{Module_Name}' => $this->getModuleName(),
+            '{module_name}' => strtolower($this->getModuleName()),
+            '{LICENSE}' => self::$_config->license,
+            '{USER_NAME}' => self::$_config->user_name,
+            '{USER_EMAIL}' => self::$_config->user_email,
+            '{USER_TWITTER}' => self::$_config->user_twitter,
+            '{Namespace}' => $this->_namespace,
+            '{date_year}' => date('Y'),
+            '{COMPANY_NAME}' => self::$_config->company_name,
+            '{COMPANY_URL}' => self::$_config->company_url
         );
 
         if ($name !== 'copyright') {

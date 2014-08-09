@@ -32,14 +32,38 @@ namespace Mbiz\Installer\Helper;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper as InstallerHelper;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 
-class Helper
-{
+class Helper extends BaseCommand {
+
+    /**
+     * Configure the Command
+     * @return \Mbiz\Installer\Block\Adminhtml
+     */
+    public function configure()
+    {
+        return $this
+            ->setName('helper')
+            ->setDescription('Create adminhtml section (menu items + acl)')
+            ->addArgument(
+                'name',
+                InputArgument::REQUIRED,
+                'Title of the helper'
+            )
+            ->addArgument(
+                'methods',
+                InputArgument::IS_ARRAY,
+                'Title of the methods included in helper'
+            );
+    }
+
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $_installerHelper = new InstallerHelper();
 
-        $params = $input->getParams();
+        $params = $input->getArgument('name');
         if (empty($params)) {
             $name = ucfirst($_installerHelper->prompt('Class? (enter for Data)'));
             if (empty($name)) {
