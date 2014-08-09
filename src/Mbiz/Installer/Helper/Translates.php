@@ -28,17 +28,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
-namespace Mbiz\Installer\Helper\Translate;
+namespace Mbiz\Installer\Helper\Translates;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper\Translate as Translate;
 
 
-class Translate extends BaseCommand
+class Translates extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->_processTranslate(array('admin'));
-        $this->_processTranslate(array('front'));
+        $_translate = new Translate();
+        $_translate->execute(array('admin'));
+        $_translate->execute(array('front'));
     }
 
 }

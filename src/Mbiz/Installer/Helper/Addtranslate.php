@@ -31,9 +31,10 @@
 namespace Mbiz\Installer\Helper\Translate;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Helper\Translate as Translate;
 
 
-class Translate extends BaseCommand
+class Addtranslate extends BaseCommand
 {
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -43,7 +44,8 @@ class Translate extends BaseCommand
             $config->addChild('frontend');
         }
         if (!isset($config->frontend->translate) && !isset($config->adminhtml->translate)) {
-            $this->_processTranslate(array());
+            $_translate = new Translate();
+            $_translate->execute($input, $output);
         }
 
         do {

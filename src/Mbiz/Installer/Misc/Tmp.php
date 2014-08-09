@@ -32,19 +32,26 @@
 namespace Mbiz\Installer\Misc\Tmp;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-
+use Mbiz\Installer\Core\Module as Module;
+use Mbiz\Installer\Router\Router as Router;
+use Mbiz\Installer\Controller\Controller as Controller;
 
 class Tmp extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->_processModule(array(self::$_config->company_name_short, 'tmp', 'local'), true);
-        $this->_processRouter(array('front', 'tmp'));
+        $_module = new Module();
+        $_module->execute(array(self::$_config->company_name_short, 'tmp', 'local'), true);
+
+        // Router
+        $_router = new Router();
+        $_router->execute(array('front', 'tmp'));
 
         if (empty($params)) {
             $params = array('index');
         }
         array_unshift($params, 'index');
-        $this->_processController($params);
+        $_controller = new Controller();
+        $_controller->execute($params);
     }
 }

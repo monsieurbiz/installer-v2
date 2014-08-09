@@ -33,14 +33,15 @@
 namespace Mbiz\Installer\Model\Entity;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-
+use Mbiz\Installer\Config\Resources as Resources;
 
 class Entity
 {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->_processResources(array());
+        $_resources = new Resources();
+        $_resources->execute(array());
 
         if (empty($params)) {
             do {

@@ -32,15 +32,19 @@
 namespace Mbiz\Installer\Misc\Session;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Mbiz\Installer\Core\Module as Module;
+use Mbiz\Installer\Model\Model as Model;
 
 
 class Session extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->_processModule();
+        $_module = new Module();
+        $_module->execute();
         array_unshift($params, '_construct:this/p'); // method
         array_unshift($params, 'session'); // class
-        $this->_processModel($params);
+        $_model = new Model();
+        $_model->execute($params);
     }
 }

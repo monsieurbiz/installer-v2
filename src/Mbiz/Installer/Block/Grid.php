@@ -34,6 +34,9 @@ namespace Mbiz\Installer\Block\Grid;
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper\Helper as Helper;
 use Mbiz\Installer\Config\Resources as Resources;
+use Mbiz\Installer\Model\Entity as Entity;
+use Mbiz\Installer\Controller\Controller as Controller;
+use Mbiz\Installer\Router\Router as Router;
 
 class Grid{
 
@@ -59,7 +62,8 @@ class Grid{
         $resourceModel = $config->global->models->{strtolower($this->getModuleName())}->resourceModel;
         $entities = $config->global->models->{$resourceModel}->entities;
         if (!$entities->{strtolower($entity)}) {
-            $this->_processEntity(array($entity));
+            $_entity = new Entity();
+            $_entity->execute(array($entity));
         }
         unset($config);
 
@@ -118,13 +122,15 @@ class Grid{
         ));
 
         // Grid controller..
-        $this->_processController(array('adminhtml_' . strtolower($this->_module) . '_' . strtolower($entity), '-'), compact('methods'));
+        $_controller = new Controller();
+        $_controller->execute(array('adminhtml_' . strtolower($this->_module) . '_' . strtolower($entity), '-'), compact('methods'));
 
         // Helper data
         $_helper = new Helper();
         $_helper->execute(array('data', '-'));
 
         // Router
-        $this->_processRouter(array('admin'));
+        $_router = new Router();
+        $_router->execute(array('admin'));
     }
 }

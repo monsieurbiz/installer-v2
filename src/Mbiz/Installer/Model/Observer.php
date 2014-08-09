@@ -32,15 +32,19 @@
 namespace Mbiz\Installer\Model\Observer;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-
+use Mbiz\Installer\Core\Module as Module;
+use Mbiz\Installer\Model\Model as Model;
 
 class Observer extends BaseCommand
 {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->_processModule();
-        $this->_processModel($params, 'observer');
+        $_module = new Module();
+        $_module->execute();
+
+        $_model = new Model();
+        $_model->execute($input, 'observer');
     }
 
 }
