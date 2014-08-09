@@ -33,8 +33,8 @@ namespace Mbiz\Installer\Config;
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper as InstallerHelper;
 
-class Resources extends BaseCommand
-{
+class Resources extends BaseCommand {
+
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $_installerHelper = new InstallerHelper();

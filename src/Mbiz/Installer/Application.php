@@ -77,6 +77,19 @@ class Application extends BaseApplication
         $this->add(new Hello\Hello);
         $this->add(new Core\Unicorn);
         $this->add(new Core\Module);
+
+        //---------- Block----------
+        $this->add(new Block\Adminhtml);
+        /*$this->add(new Block\Block);
+        $this->add(new Block\Email);
+        $this->add(new Block\Form);
+        $this->add(new Block\Grid);
+
+        //---------- Block----------
+        $this->add(new Config\Cron);
+        $this->add(new Config\Data);*/
+
+        //---------- Misc----------
         $this->add(new Misc\Doc);
 
         // Run the Installer shell

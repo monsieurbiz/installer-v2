@@ -38,8 +38,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Mbiz\Installer\Shell;
 
-class Module extends BaseCommand
-{
+class Module extends BaseCommand {
 
     /**
      * Configure the Command

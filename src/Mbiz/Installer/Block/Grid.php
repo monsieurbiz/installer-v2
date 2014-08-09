@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper as InstallerHelper;
 use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
-class Grid{
+class Grid extends BaseCommand {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {

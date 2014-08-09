@@ -33,7 +33,7 @@ namespace Mbiz\Installer\Core;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 
-class Help{
+class Help extends BaseCommand {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {

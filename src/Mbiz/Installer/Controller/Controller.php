@@ -34,7 +34,7 @@ namespace Mbiz\Installer\Controller;
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper as InstallerHelper;
 
-class Controller{
+class Controller extends BaseCommand {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {

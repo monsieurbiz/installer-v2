@@ -34,7 +34,7 @@ namespace Mbiz\Installer\Block;
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper as InstallerHelper;
 
-class Block{
+class Block extends BaseCommand {
 
     public function execute(InputInterface $input, OutputInterface $output)
     {

@@ -35,8 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper as InstallerHelper;
 use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
-class Email
-{
+class Email extends BaseCommand {
 
     /**
      * Create a custom email template with the good configuration and file
