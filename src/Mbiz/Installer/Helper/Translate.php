@@ -33,11 +33,14 @@ namespace Mbiz\Installer\Helper;
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Helper\Helper as Helper;
 use Mbiz\Installer\Helper as InstallerHelper;
+use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
 class Translate extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $_installerHelper = new InstallerHelper();
+
         if (!empty($params) && in_array($params[0], array('admin', 'front'))) {
             $where = $params[0];
         } else {
@@ -55,7 +58,6 @@ class Translate extends BaseCommand
             $where = 'frontend';
         }
 
-        $_installerHelper = new InstallerHelper();
         $config = $_installerHelper->getConfig();
 
         if (!isset($config->{$where})) {
@@ -63,8 +65,15 @@ class Translate extends BaseCommand
         }
 
         if (!isset($config->{$where}->translate)) {
-            $_helper = new Helper();
-            $_helper->execute(array('data', '-'));
+            // Helper data
+            $command = $this->getApplication()->find('helper');
+            $arguments = array(
+                'command' => 'helper',
+                'params'    => array('data', '-')
+            );
+
+            $input = new ArrayInput($arguments);
+            $command->run($input, $output);
             $config->{$where}
                 ->addChild('translate')
                 ->addChild('modules')

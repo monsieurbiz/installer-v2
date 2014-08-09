@@ -38,6 +38,7 @@ use Mbiz\Installer\Model\Entity as Entity;
 use Mbiz\Installer\Controller\Controller as Controller;
 use Mbiz\Installer\Router\Router as Router;
 use Mbiz\Installer\Helper as InstallerHelper;
+use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
 class Form{
 
