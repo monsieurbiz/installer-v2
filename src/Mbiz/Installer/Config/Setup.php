@@ -28,3 +28,61 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
+namespace Mbiz\Installer\Config\Setup;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+class Setup{
+
+    protected function _process(array $params)
+    {
+        list($dir, $created) = $this->getModuleDir('sql', true);
+
+        $config = $this->getConfig();
+        if (!isset($config->global)) {
+            $config->addChild('global');
+        }
+        $global = $config->global;
+        if (!$global->resources || !$global->resources->{strtolower($this->getModuleName()) . '_setup'}) {
+            if (!$resources = $global->resources) {
+                $resources = $global->addChild('resources');
+            }
+            if (!$moduleSetup = $resources->{strtolower($this->getModuleName()) . '_setup'}) {
+                $moduleSetup = $resources->addChild(strtolower($this->getModuleName()) . '_setup');
+            }
+
+            $setup = $moduleSetup->addChild('setup');
+            $setup->addChild('module', $this->getModuleName());
+            $setup->addChild('class', 'Mage_Core_Model_Resource_Setup');
+            $connection = $moduleSetup->addChild('connection');
+            $connection->addChild('use', 'core_setup');
+            $this->writeConfig();
+        }
+
+        $dir = $dir . strtolower($this->getModuleName()) . '_setup/';
+
+        if (!is_dir($dir)) {
+            mkdir($dir);
+        }
+
+        $setupClass = (string) $config
+            ->global
+            ->resources
+            ->{strtolower($this->getModuleName()) . '_setup'}
+            ->setup
+            ->class
+        ;
+
+        $filename = $dir . 'install-' . $this->getConfigVersion() . '.php';
+        if (!is_file($filename)) {
+            file_put_contents($filename, $this->getTemplate('setup_class', array(
+                'Mage_Core_Model_Resource_Setup' => $setupClass
+            )));
+        }
+
+        $this->_processReloadConfig();
+
+        $this->setLast(__FUNCTION__);
+    }
+}

@@ -28,3 +28,113 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
+namespace Mbiz\Installer\Config\Cron;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+class Cron{
+
+    protected function _process(array $params)
+    {
+        // Ask parts of cron ;)
+        // Cron name
+        if (empty($params)) {
+            do {
+                $line = $this->prompt('Identifier?');
+            } while (empty($line));
+        } else {
+            $line = array_shift($params);
+        }
+        $identifier = $line;
+
+        // Minutes
+        if (empty($params)) {
+            do {
+                $line = $this->prompt('Minutes?');
+            } while ($line === '');
+        } else {
+            $line = array_shift($params);
+        }
+        $minutes = $line;
+
+        // Hours
+        if (empty($params)) {
+            do {
+                $line = $this->prompt('Hours?');
+            } while ($line === '');
+        } else {
+            $line = array_shift($params);
+        }
+        $hours = $line;
+
+        // Days (0-31)
+        if (empty($params)) {
+            do {
+                $line = $this->prompt('Days? (0-31)');
+            } while ($line === '');
+        } else {
+            $line = array_shift($params);
+        }
+        $days = $line;
+
+        // Month
+        if (empty($params)) {
+            do {
+                $line = $this->prompt('Month?');
+            } while ($line === '');
+        } else {
+            $line = array_shift($params);
+        }
+        $month = $line;
+
+        // Week days (0-6)
+        if (empty($params)) {
+            do {
+                $line = $this->prompt('Days of week?');
+            } while ($line === '');
+        } else {
+            $line = array_shift($params);
+        }
+        $daysWeek = $line;
+
+        // Model
+        if (empty($params)) {
+            do {
+                $line = $this->prompt('Model?');
+            } while (empty($line));
+        } else {
+            $line = array_shift($params);
+        }
+        $model = $line;
+
+        // Method
+        if (empty($params)) {
+            do {
+                $line = $this->prompt('Method?');
+            } while (empty($line));
+        } else {
+            $line = array_shift($params);
+        }
+        $method = $line;
+
+
+        // Now the Config
+        $config = $this->getConfig();
+        if (!isset($config->crontab)) {
+            $config->addChild('crontab');
+        }
+        if (!isset($config->crontab->jobs)) {
+            $config->crontab->addChild('jobs');
+        }
+
+        // Our cron
+        $cron = $config->crontab->jobs->addChild($identifier);
+        $cron->addChild('schedule')->addChild('cron_expr');
+        $cron->schedule->cron_expr = sprintf('%s %s %s %s %s', $minutes, $hours, $days, $month, $daysWeek);
+        $cron->addChild('run')->addChild('model');
+        $cron->run->model = sprintf('%s::%s', $model, $method);
+
+        $this->writeConfig();
+    }
+}
