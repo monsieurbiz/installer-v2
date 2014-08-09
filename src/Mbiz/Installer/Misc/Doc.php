@@ -29,15 +29,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-namespace Mbiz\Installer\Routers\Doc;
+namespace Mbiz\Installer\Misc\Doc;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 
 
 class Doc extends BaseCommand
 {
+    /**
+     * Configure the Command
+     * @return \Mbiz\Installer\Misc\Doc
+     */
+    public function configure()
+    {
+        return $this
+            ->setName('doc')
+            ->setDescription('Create README.md file')
+            ->addArgument(
+                'title',
+                InputArgument::REQUIRED,
+                'Title of the README.md'
+            )
+            ->setTemplatesDirectory(__DIR__ . '/Resources/output/')
+            ;
+    }
+
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $params = $input->getArgument('title');
+
         // Title?
         if (!empty($params)) {
             $title = implode(' ', $params);
@@ -48,9 +68,11 @@ class Doc extends BaseCommand
         $dir = $this->getModuleDir('doc');
 
         if (!is_file($filename = $dir . '/README.md')) {
+            $output->writeLn($this->render('doc.twig', ['name' => $name]));
             file_put_contents($filename, $this->getTemplate('doc_readme', array(
-                'title' => $title
+               'title' => $title
             )));
         }
+
     }
 }
