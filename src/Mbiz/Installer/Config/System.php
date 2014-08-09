@@ -32,13 +32,12 @@
 namespace Mbiz\Installer\Config;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper\Helper as Helper;
 use Mbiz\Installer\Helper as InstallerHelper;
 use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
 class System{
 
-    protected function execute(array $params)
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         // Helper data
         $command = $this->getApplication()->find('helper');

@@ -32,11 +32,8 @@
 namespace Mbiz\Installer\Config;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Config\Info\Event as InfoEvent;
-use Mbiz\Installer\Config\Info\Router as InfoRouter;
-use Mbiz\Installer\Config\Info\Router as InfoLayout;
-use Mbiz\Installer\Config\Info\Router as InfoTranslate;
 use Mbiz\Installer\Helper as InstallerHelper;
+use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
 class Info{
 
@@ -140,8 +137,14 @@ class Info{
 
         // Events
         if ($config->global && $config->global->events) {
-            $infoEvent = new InfoEvent();
-            $infoEvent->execute($config->global->events);
+            $command = $this->getApplication()->find('infoevent');
+            $arguments = array(
+                'command' => 'infoevent',
+                'params'    => array('data', $config->global->events)
+            );
+
+            $input = new ArrayInput($arguments);
+            $command->run($input, $output);
         }
 
         // Resources
@@ -173,28 +176,44 @@ class Info{
             }
         }
 
-
         // Frontend
         echo $r . "Frontend Configuration\n";
         echo $r . str_repeat('-', $width) . "\n";
 
-        $infoRouter = new InfoRouter();
-        $infoLayout = new InfoLayout();
-        $infoTranslate = new InfoTranslate();
-
         // Routers
         if ($config->frontend && $config->frontend->routers) {
-            $infoRouter->_processInfoRouters($config->frontend->routers);
+            $command = $this->getApplication()->find('inforouter');
+            $arguments = array(
+                'command' => 'inforouter',
+                'params'    => array('data', $config->frontend->routers)
+            );
+
+            $input = new ArrayInput($arguments);
+            $command->run($input, $output);
         }
 
         // Layout
         if ($config->frontend && $config->frontend->layout) {
-            $infoLayout->_processInfoLayout($config->frontend->layout);
+            $command = $this->getApplication()->find('infolayout');
+            $arguments = array(
+                'command' => 'infolayout',
+                'params'    => array('data', $config->frontend->layout)
+            );
+
+            $input = new ArrayInput($arguments);
+            $command->run($input, $output);
         }
 
         // Translate
         if ($config->frontend && $config->frontend->translate) {
-            $infoTranslate->execute($config->frontend->translate);
+            $command = $this->getApplication()->find('infotranslate');
+            $arguments = array(
+                'command' => 'infotranslate',
+                'params'    => array('data', $config->frontend->translate)
+            );
+
+            $input = new ArrayInput($arguments);
+            $command->run($input, $output);
         }
 
 
@@ -205,17 +224,38 @@ class Info{
 
         // Routers
         if ($config->admin && $config->admin->routers) {
-            $infoRouter->execute($config->admin->routers);
+            $command = $this->getApplication()->find('inforouter');
+            $arguments = array(
+                'command' => 'inforouter',
+                'params'    => array('data', $config->frontend->routers)
+            );
+
+            $input = new ArrayInput($arguments);
+            $command->run($input, $output);
         }
 
         // Layout
         if ($config->admin && $config->adminhtml->layout) {
-            $infoLayout->execute($config->adminhtml->layout);
+            $command = $this->getApplication()->find('infolayout');
+            $arguments = array(
+                'command' => 'infolayout',
+                'params'    => array('data', $config->frontend->layout)
+            );
+
+            $input = new ArrayInput($arguments);
+            $command->run($input, $output);
         }
 
         // Translate
         if ($config->admin && $config->adminhtml->translate) {
-            $infoTranslate->execute($config->adminhtml->translate);
+            $command = $this->getApplication()->find('infotranslate');
+            $arguments = array(
+                'command' => 'infotranslate',
+                'params'    => array('data', $config->frontend->translate)
+            );
+
+            $input = new ArrayInput($arguments);
+            $command->run($input, $output);
         }
 
 

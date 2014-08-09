@@ -31,16 +31,28 @@
 namespace Mbiz\Installer\Helper;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
-use Mbiz\Installer\Helper\Translate as Translate;
-
+use Symfony\Component\Console\Input\ArrayInput as ArrayInput;
 
 class Translates extends BaseCommand
 {
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $_translate = new Translate();
-        $_translate->execute(array('admin'));
-        $_translate->execute(array('front'));
+        $command = $this->getApplication()->find('translate');
+        $arguments = array(
+            'command' => 'translate',
+            'params'    => array('admin')
+        );
+
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
+
+        $arguments = array(
+            'command' => 'translate',
+            'params'    => array('front')
+        );
+
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
     }
 
 }
