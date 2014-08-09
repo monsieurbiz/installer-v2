@@ -55,21 +55,8 @@ class Form{
             $entity = array_shift($params);
         }
 
-        // Check entity exists
-        $_resources = new Resources();
-        $_resources->execute(array());
-
-        $config = $_installationHelper->getConfig();
-        if (!isset($config->global)) {
-            $config->addChild('global');
-        }
-        $resourceModel = $config->global->models->{strtolower($_installationHelper->getModuleName())}->resourceModel;
-        $entities = $config->global->models->{$resourceModel}->entities;
-        if (!$entities->{strtolower($entity)}) {
-            $_entity = new Entity();
-            $_entity->execute(array($entity));
-        }
-        unset($config);
+        $command = $this->getApplication()->find('entity');
+        $command->run($input, $output);
 
         // Create directories :)
         $names = $entityTab = array_map('ucfirst', explode('_', $entity));
@@ -133,15 +120,34 @@ class Form{
         ));
 
         // Grid controller..
-        $_controller = new Controller();
-        $_controller->execute(array('adminhtml_' . strtolower($this->_module) .'_'. strtolower($entity) , '-'), compact('methods'));
+        $command = $this->getApplication()->find('controller');
+        $arguments = array(
+            'command' => 'controller',
+            'params'    => array('adminhtml_' . strtolower($this->_module) .'_'. strtolower($entity)),
+            'data'  => compact('methods'),
+        );
+
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
 
         // Helper data
-        $_helper = new Helper();
-        $_helper->execute(array('data', '-'));
+        $command = $this->getApplication()->find('helper');
+        $arguments = array(
+            'command' => 'helper',
+            'params'    => array('data', '-')
+        );
+
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
 
         // Router
-        $_router = new Router();
-        $_router->execute(array('admin'));
+        $command = $this->getApplication()->find('router');
+        $arguments = array(
+            'command' => 'router',
+            'params'    => array('admin')
+        );
+
+        $input = new ArrayInput($arguments);
+        $command->run($input, $output);
     }
 }
