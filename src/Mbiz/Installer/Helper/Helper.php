@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of Installer version 2.
  *
@@ -28,9 +29,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
-
-class Helper{
-    protected function _processHelper(array $params)
+class Helper
+{
+    public function execute(InputInterface $input, OutputInterface $output)
     {
         if (empty($params)) {
             $name = ucfirst($this->prompt('Class? (enter for Data)'));

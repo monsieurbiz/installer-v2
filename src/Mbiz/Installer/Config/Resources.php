@@ -28,3 +28,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+namespace Mbiz\Installer\Routers\Resources;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+
+class Resources extends BaseCommand
+{
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        list($dir, $created) = $this->_createModelDir();
+
+        $config = $this->getConfig();
+        $models = $config->global->models;
+
+        if (!$models->{strtolower($this->getModuleName())}->resourceModel) {
+            $models->{strtolower($this->getModuleName())}->addChild('resourceModel', strtolower($this->getModuleName()) . '_resource');
+            $resource = $models->addChild(strtolower($this->getModuleName()) . '_resource');
+            $resource->addChild('class', $this->getModuleName() . '_Model_Resource');
+            $resource->addChild('entities');
+            $this->writeConfig();
+            @mkdir($dir = $dir . 'Resource/');
+        }
+
+        $this->_processReloadConfig();
+
+        $this->setLast(__FUNCTION__);
+    }
+}

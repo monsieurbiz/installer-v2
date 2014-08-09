@@ -28,3 +28,53 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
+namespace Mbiz\Installer\Config\Defaultconfig;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+class Defaultconfig{
+
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        if (empty($params)) {
+            do {
+                $name = $this->prompt("Name?");
+            } while (empty($name));
+        } else {
+            $name = array_shift($params);
+        }
+
+        if (!count($params)) {
+            do {
+                $value = $this->prompt("Value?");
+            } while ($value === '');
+        } else {
+            $value = array_shift($params);
+        }
+
+        // conf
+        /* @var $config SimpleXMLElement */
+        $config = $this->getConfig();
+        if (!isset($config->default)) {
+            $config->addChild('default');
+        }
+        $config = $config->default;
+
+        $names = explode('/', strtolower($name));
+
+        foreach ($names as $name) {
+            if (!$config->$name) {
+                $config->addChild($name);
+            }
+            $config = $config->$name;
+        }
+
+        // Adding text as cdata
+        $node = dom_import_simplexml($config[0]);
+        $no = $node->ownerDocument;
+        $node->appendChild($no->createCDATASection($value));
+
+        $this->writeConfig();
+    }
+}

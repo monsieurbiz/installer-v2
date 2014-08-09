@@ -28,3 +28,45 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+namespace Mbiz\Installer\Helper\Translate;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+
+class Translate extends BaseCommand
+{
+
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        $config = $this->getConfig();
+        if (!isset($config->frontend)) {
+            $config->addChild('frontend');
+        }
+        if (!isset($config->frontend->translate) && !isset($config->adminhtml->translate)) {
+            $this->_processTranslate(array());
+        }
+
+        do {
+            $translate = $this->prompt('Translate?');
+        } while (empty($translate));
+
+        $translate = str_replace('"', '""', $translate);
+
+        foreach ($this->getLocales() as $locale) {
+            $traduction = $this->prompt('Traduction for ' . red() . $locale . white() . '?');
+            if (empty($traduction)) {
+                $traduction = $translate;
+            } else {
+                $traduction = str_replace('"', '""', $traduction);
+            }
+            $dir = $this->getAppDir() . 'locale/' . $locale . '/';
+            $filename = $dir . $this->getModuleName() . '.csv';
+            if (is_dir($dir) && is_file($filename)) {
+                $fp = fopen($filename, 'a');
+                $str = '"' . $translate . '","' . $traduction . '"' . "\n";
+                fputs($fp, $str, mb_strlen($str));
+                fclose($fp);
+            }
+        }
+    }
+}

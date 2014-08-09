@@ -60,5 +60,14 @@ class Command extends BaseCommand
         $this->_twig = $twig;
     }
 
+    /**
+     * Retrieve the dialog
+     * @return \Symfony\Component\Console\Helper\DialogHelper
+     */
+    public function getDialog()
+    {
+        return $this->getHelperSet()->get('dialog');
+    }
+
 
 }

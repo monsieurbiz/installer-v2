@@ -50,15 +50,42 @@ class Application extends BaseApplication
     const APP_VERSION = '2.0.0@dev';
 
     /**
+     * Run the shell
+     * @var bool
+     */
+    protected $_runShell = true;
+
+    /**
      * Construct the Application
      */
-    public function __construct()
+    public function __construct($runShell = true)
     {
         parent::__construct(self::APP_NAME, self::APP_VERSION);
 
-        $this->add(new Hello\Hello);
+        $this->_runShell = (bool) $runShell;
 
-        $this->runShell();
+        $this->add(new Hello\Hello);
+    }
+
+    /**
+     * Runs the current application.
+     *
+     * @param InputInterface  $input  An Input instance
+     * @param OutputInterface $output An Output instance
+     *
+     * @return int 0 if everything went fine, or an error code
+     *
+     * @throws \Exception When doRun returns Exception
+     *
+     * @api
+     */
+    public function run(InputInterface $input = null, OutputInterface $output = null)
+    {
+        if ($this->_runShell) {
+            $this->runShell();
+        } else {
+            parent::run($input, $output);
+        }
     }
 
     /**

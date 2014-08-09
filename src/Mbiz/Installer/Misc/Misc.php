@@ -28,3 +28,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
+namespace Mbiz\Installer\Misc\Misc;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+
+class Misc extends BaseCommand
+{
+    public function execute(InputInterface $input, OutputInterface $output)
+    {
+        if (empty($params)) {
+            do {
+                $name = $this->prompt('Which name?');
+            } while (empty($name));
+        } else {
+            $name = array_shift($params);
+        }
+
+        $name = str_replace(' ', '_', strtolower($name));
+
+        $dir = $this->getMiscDir();
+        if (!is_dir($dir)) {
+            mkdir($dir);
+        }
+
+        $filename = $dir . '/' . $name . '.php';
+
+        if (!is_file($filename)) {
+            file_put_contents($filename, $this->getTemplate('misc'));
+        }
+
+    }
+}

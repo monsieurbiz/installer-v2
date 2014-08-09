@@ -28,3 +28,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
+namespace Mbiz\Installer\Core\Unicorn;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+class Unicorn{
+
+    function execute(){
+        die("Oh shit. Really? A Unicorn?");
+    }
+}
