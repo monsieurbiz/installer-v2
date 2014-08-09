@@ -29,7 +29,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-namespace Mbiz\Installer\Block\Email;
+namespace Mbiz\Installer\Block;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 use Mbiz\Installer\Config\Defaultconfig as Defaulconfig;

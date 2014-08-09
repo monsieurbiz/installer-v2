@@ -29,7 +29,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-namespace Mbiz\Installer\Config\Info\Translate;
+namespace Mbiz\Installer\Config\Info;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 

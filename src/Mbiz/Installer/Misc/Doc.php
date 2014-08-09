@@ -29,9 +29,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-namespace Mbiz\Installer\Misc\Doc;
+namespace Mbiz\Installer\Misc;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 
 class Doc extends BaseCommand
@@ -48,7 +51,7 @@ class Doc extends BaseCommand
             ->addArgument(
                 'title',
                 InputArgument::REQUIRED,
-                'Title of the README.md'
+                'Title of the README.md entered in quotes: "My Module"'
             )
             ->setTemplatesDirectory(__DIR__ . '/Resources/output/')
             ;
@@ -56,16 +59,9 @@ class Doc extends BaseCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $params = $input->getArgument('title');
+        $title = $input->getArgument('title');
 
-        // Title?
-        if (!empty($params)) {
-            $title = implode(' ', $params);
-        } else {
-            $title = $this->getModuleTitle();
-        }
-
-        $dir = $this->getModuleDir('doc');
+        $dir = __DIR___;//$this->getModuleDir('doc');
 
         if (!is_file($filename = $dir . '/README.md')) {
             $output->writeLn($this->render('doc.twig', ['name' => $name]));

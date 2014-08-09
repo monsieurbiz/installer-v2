@@ -72,6 +72,7 @@ class Application extends BaseApplication
         $this->add(new Hello\Hello);
         $this->add(new Core\Unicorn);
         $this->add(new Core\Module);
+        $this->add(new Misc\Doc);
 
         $this->runShell();
     }
