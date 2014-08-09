@@ -28,3 +28,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
+namespace Mbiz\Installer\Core\Last;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+class Last{
+
+    protected function _processLast(array $params)
+    {
+        if (null !== $this->_lastMethod) {
+            $name = $this->_lastMethod;
+            $this->$name(array_merge($this->_lastParams, $params));
+        }
+    }
+}

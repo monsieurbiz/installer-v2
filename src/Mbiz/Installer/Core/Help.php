@@ -28,3 +28,64 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
+namespace Mbiz\Installer\Core\Help;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+class Help{
+
+    public function help()
+    {
+        echo white();
+        echo <<<HELP
+  ---------------------- ----------------------- -------------------------------------------
+ | COMMAND              | ALIAS                 | PARAMETERS                                |
+ |----------------------|-----------------------|-------------------------------------------|
+ | help                 | -h ?                  |                                           |
+ | module               | mod                   | namespace name pool                       |
+ | general              |                       |                                           |
+ | info                 | i config conf         |                                           |
+ | clean                |                       | [all, cache, log(s)]                      |
+ | controller           | c                     | name [actions]                            |
+ | helper               | h                     | name [methods]                            |
+ | model                | m                     | name [methods]                            |
+ | observer             | o                     | name [methods]                            |
+ | observer Observer    | oo                    | [methods]                                 |
+ | block                | b                     | name [methods] [-p]                       |
+ | translate            | t                     | where                                     |
+ | translates           | ts                    |                                           |
+ | layout               | l                     | where                                     |
+ | layouts              | ls                    |                                           |
+ | resources            | res                   |                                           |
+ | entity               | ent                   | name table                                |
+ | grid                 |                       | entity                                    |
+ | form                 |                       | entity                                    |
+ |----------------------|-----------------------|-------------------------------------------|
+ | COMMAND              | ALIAS                 | PARAMETERS                                |
+ |----------------------|-----------------------|-------------------------------------------|
+ | setup                | sql set               |                                           |
+ | data                 |                       | [[from] to]                               |
+ | upgrade              | up                    | [from] to                                 |
+ | event                |                       | name model method where                   |
+ | cron                 |                       | identifier 1 2 3 4 5 model method         |
+ | default              | def conf              | name value                                |
+ | depends              | dep                   | (-)module                                 |
+ | exit                 |                       |                                           |
+ | delete               | del rm remove         |                                           |
+ | last                 |                       | [...]                                     |
+ | addtranslate         | __                    |                                           |
+ | routers              | r route router        | where frontName                           |
+ | tmp                  |                       | action                                    |
+ | misc                 | script                | name (without .php)                       |
+ | doc                  |                       | [title]                                   |
+ | system               |                       |                                           |
+ | adminhtml            |                       |                                           |
+ | session              |                       | [methods]                                 |
+ | email                | mail                  | name                                      |
+ |                      |                       |                                           |
+  ---------------------- ----------------------- -------------------------------------------
+
+HELP;
+    }
+}

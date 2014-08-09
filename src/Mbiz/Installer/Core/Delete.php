@@ -28,3 +28,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
+namespace Mbiz\Installer\Core\Delete;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+class Delete{
+
+    protected function _process()
+    {
+        do {
+            $response = strtolower($this->prompt('Are you sure you want to delete the module ' . red() . $this->getModuleName() . white() . '? (yes/no)'));
+        } while (!in_array($response, array('yes', 'no')));
+
+        if ($response === 'yes') {
+            $this->_rmdir($this->getModuleDir());
+            @unlink($this->getAppDir() . 'etc/modules/' . $this->getModuleName() . '.xml');
+            $this->_rmdir($this->getDesignDir('frontend') . strtolower($this->getModuleName()));
+            $this->_rmdir($this->getDesignDir('adminhtml') . strtolower($this->getModuleName()));
+            foreach ($this->getLocales() as $locale) {
+                @unlink($this->getAppDir() . 'locale/' . $locale . '/' . $this->getModuleName() . '.csv');
+            }
+            $this->_namespace = null;
+            $this->_module = null;
+            $this->_pool = null;
+            $this->_mageConfig = null;
+        }
+    }
+}

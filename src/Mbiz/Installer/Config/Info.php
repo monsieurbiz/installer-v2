@@ -29,8 +29,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
+namespace Mbiz\Installer\Config\Info;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
 class Info{
-    protected function _processInfo(array $params)
+
+    protected function _process(array $params)
     {
         // Colors
         $r = red();

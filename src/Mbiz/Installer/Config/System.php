@@ -28,3 +28,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
+namespace Mbiz\Installer\Config\System;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+class System{
+
+    protected function _process(array $params)
+    {
+        $this->_processHelper(array('data', '-'));
+
+        $dir = $this->getModuleDir('etc');
+
+        if (!is_file($filename = $dir . '/system.xml')) {
+            file_put_contents($filename, $this->getTemplate('system_xml', array(
+                '{module}' => strtolower($this->getModuleName())
+            )));
+        }
+    }
+}

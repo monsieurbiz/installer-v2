@@ -28,3 +28,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
+namespace Mbiz\Installer\Config\General;
+
+use Mbiz\Installer\Command\Command as BaseCommand;
+
+class General{
+
+    protected function _process(array $params)
+    {
+        // If no config file
+        if (false === $local = $this->_getLocalXml()) {
+            return;
+        }
+
+        $width = 80;
+
+        // General
+        echo red() . "General Configuration\n";
+        echo red() . str_repeat('-', $width) . "\n";
+
+        // Database
+        if (
+            $local->global
+            && $local->global->resources
+            && $local->global->resources->default_setup
+            && $local->global->resources->default_setup->connection
+        ) {
+            echo green() . "Database\n";
+            $c = $local->global->resources->default_setup->connection;
+            echo yellow() . 'Host' . white() . ' : ' . trim($c->host) . "\n";
+            echo yellow() . 'User' . white() . ' : ' . trim($c->username) . "\n";
+            echo yellow() . 'Pass' . white() . ' : ' . trim($c->password) . "\n";
+            echo yellow() . 'Name' . white() . ' : ' . trim($c->dbname) . "\n";
+        }
+
+        echo "\n";
+    }
+}
