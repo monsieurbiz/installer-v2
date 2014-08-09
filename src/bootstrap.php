@@ -77,8 +77,8 @@ if (!class_exists('\Mbiz\Installer\Bootstrap')) {
  * Init the application
  */
 try {
-    $loader = Bootstrap::getLoader();
-    $application = new Application($loader);
+    Bootstrap::getLoader();
+    $application = new Application();
 
     return $application;
 

@@ -29,7 +29,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 
-namespace Mbiz\Installer\Routers\Session;
+namespace Mbiz\Installer\Misc\Session;
 
 use Mbiz\Installer\Command\Command as BaseCommand;
 
