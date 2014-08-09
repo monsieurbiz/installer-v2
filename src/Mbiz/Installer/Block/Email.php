@@ -39,7 +39,7 @@ class Email
     /**
      * Create a custom email template with the good configuration and file
      */
-    protected function _process(array $params)
+    public function execute(array $params)
     {
         // Get email name
         if (empty($params)) {

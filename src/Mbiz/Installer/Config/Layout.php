@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Layout{
 
-    protected function _process(array $params)
+    public function execute(array $params)
     {
         if (!empty($params) && in_array($params[0], array('admin', 'front'))) {
             $where = $params[0];

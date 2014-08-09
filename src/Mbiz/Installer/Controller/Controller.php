@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Controller{
 
-    protected function _process(array $params, array $data = array())
+    protected function execute(array $params, array $data = array())
     {
         if (empty($params)) {
             do {

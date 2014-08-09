@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Unicorn{
 
-    function _process(){
+    function execute(){
         die("Oh shit. Really? A Unicorn?");
     }
 }

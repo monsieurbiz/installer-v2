@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Delete{
 
-    protected function _process()
+    protected function execute()
     {
         do {
             $response = strtolower($this->prompt('Are you sure you want to delete the module ' . red() . $this->getModuleName() . white() . '? (yes/no)'));

@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Module{
 
-    protected function _process(array $params = array(), $force = false)
+    protected function execute(array $params = array(), $force = false)
     {
         if ($force || !$this->_namespace) {
             // Namespace

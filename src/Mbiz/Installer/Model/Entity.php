@@ -31,7 +31,7 @@
 
 class Entity{
 
-    protected function _process(array $params)
+    public function execute(array $params)
     {
         $this->_processResources(array());
 

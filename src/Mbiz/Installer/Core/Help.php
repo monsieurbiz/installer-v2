@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Help{
 
-    public function help()
+    public function execute()
     {
         echo white();
         echo <<<HELP

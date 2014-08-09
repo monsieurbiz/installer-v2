@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Last{
 
-    protected function _processLast(array $params)
+    protected function execute(array $params)
     {
         if (null !== $this->_lastMethod) {
             $name = $this->_lastMethod;

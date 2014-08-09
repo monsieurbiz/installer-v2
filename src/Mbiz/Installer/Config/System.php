@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class System{
 
-    protected function _process(array $params)
+    protected function execute(array $params)
     {
         $this->_processHelper(array('data', '-'));
 

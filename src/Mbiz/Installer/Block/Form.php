@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Form{
 
-    protected function _process(array $params)
+    public function execute(array $params)
     {
         // Check entity
         if (empty($params)) {

@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Block{
 
-    protected function _process(array $params)
+    public function execute(array $params)
     {
         if (empty($params)) {
             do {

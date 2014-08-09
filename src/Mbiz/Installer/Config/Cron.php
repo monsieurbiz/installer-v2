@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class Cron{
 
-    protected function _process(array $params)
+    public function execute(array $params)
     {
         // Ask parts of cron ;)
         // Cron name

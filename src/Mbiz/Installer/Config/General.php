@@ -35,7 +35,7 @@ use Mbiz\Installer\Command\Command as BaseCommand;
 
 class General{
 
-    protected function _process(array $params)
+    public function execute(array $params)
     {
         // If no config file
         if (false === $local = $this->_getLocalXml()) {
