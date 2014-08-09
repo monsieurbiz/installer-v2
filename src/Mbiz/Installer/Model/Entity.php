@@ -42,7 +42,7 @@ class Entity
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $_resources = new Resources();
-        $_resources->execute(array());
+        $_resources->execute($input, $output);
 
         if (empty($params)) {
             do {

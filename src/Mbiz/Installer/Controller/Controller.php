@@ -36,7 +36,7 @@ use Mbiz\Installer\Helper as InstallationHelper;
 
 class Controller{
 
-    protected function execute(array $params, array $data = array())
+    public function execute(array $params, array $data = array())
     {
         if (empty($params)) {
             do {
