@@ -7,8 +7,25 @@
  */
 
 namespace Mbiz\Installer;
+use Mbiz\Installer\PHPUnit\TestCase;
 
-class ApplicationTest extends \PHPUnit_Framework_TestCase
+class ApplicationTest extends TestCase
 {
+
+    /**
+     * @test
+     */
+    public function execute()
+    {
+        /**
+         * Check autoloading
+         */
+
+        $application = $this->getApplication();
+
+        /* @var $application Application */
+        $this->assertInstanceOf('\Mbiz\Installer\Application', $application);
+
+    }
 
 }
